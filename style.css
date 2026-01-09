@@ -1,0 +1,1564 @@
+:root {
+    --bg-color: #f3f5f7;
+    --text-primary: #181a1c;
+    --accent-color: #006aff;
+
+    /* Sheet Tokens */
+    --sheet-radius: 20px;
+    --sheet-bg: #ffffff;
+    --sheet-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    --backdrop-color: rgba(0, 0, 0, 0.5);
+    --card-bg: #ffffff;
+
+    /* Stepper Tokens */
+    --fill-hovered: #f3f5f7;
+    --fill-pressed: #e9eaec;
+
+    /* Dynamic Motion Tokens (Updated by JS) */
+    --motion-duration: 0.334s;
+    --motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    /* Remove fixed height and overflow hidden to allow global scroll */
+    min-height: 100vh;
+}
+
+.handoff-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.controls {
+    width: 320px;
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.preview-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: #f8f9fa;
+    position: relative;
+    padding: 60px 40px;
+    min-height: 100vh;
+}
+
+/* Typography & UI */
+header h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.badge {
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.control-panel label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin-bottom: 12px;
+}
+
+/* Component Navigation */
+.component-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.nav-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.nav-item.active {
+    background: #000;
+    color: #fff;
+}
+
+.nav-item .icon {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.component-view {
+    width: 100%;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+}
+
+select {
+    width: 100%;
+    height: 44px;
+    padding: 0 16px;
+    padding-right: 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #181a1c;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23181a1c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 16px center;
+    background-size: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+select:hover {
+    border-color: #ccc;
+    background-color: #f9f9f9;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(0, 106, 255, 0.1);
+}
+
+.primary-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.primary-btn.full-width {
+    width: 100%;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.specs {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.token-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.token-row code {
+    font-family: 'JetBrains Mono', monospace;
+    color: #d63384;
+}
+
+/* Code Viewer */
+.code-viewer {
+    width: 100%;
+    max-width: 800px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+.tabs {
+    display: flex;
+    background: #2d2d2d;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: #888;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tab.active {
+    color: #fff;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.code-content {
+    display: none;
+    padding: 20px;
+    overflow: auto;
+    color: #d4d4d4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.code-content.active {
+    display: block;
+}
+
+pre,
+code {
+    font-family: inherit;
+}
+
+/* SHEET COMPONENT STYLES */
+.sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    visibility: hidden;
+    display: block;
+    /* Ensure it's not flex if children are absolute */
+    /* Delay hiding until slide-down transition (0.334s + buffer) finishes */
+    transition: visibility 0s linear 0.4s;
+}
+
+.sheet-overlay.open {
+    pointer-events: auto;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.sheet-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--backdrop-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sheet-overlay.open .sheet-backdrop {
+    opacity: 1;
+}
+
+.sheet-surface {
+    position: absolute;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Safety Zone: 58px */
+    height: calc(100vh - 58px);
+    background: #fff;
+    border-radius: 32px 32px 0 0;
+    transform: translateY(100%);
+    transition: transform var(--motion-duration) var(--motion-easing);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    /* Prevent browser gestures like pull-to-refresh */
+    touch-action: none;
+    cursor: ns-resize;
+    /* Indicate resizability */
+}
+
+.sheet-surface.expanded {
+    cursor: default;
+}
+
+.sheet-overlay.open .sheet-surface {
+    transform: translateY(0);
+}
+
+/* Snap Point States */
+.sheet-overlay.open .sheet-surface.collapsed {
+    /* 50% of the available sheet height: (100vh - 58px) * 0.5 */
+    transform: translateY(calc((100vh - 58px) * 0.5));
+}
+
+.sheet-surface.collapsed .sheet-body {
+    overflow: hidden;
+    /* Disable scroll in collapsed state */
+}
+
+.sheet-handle {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    z-index: 105;
+}
+
+.sheet-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 101;
+    padding: 32px 24px 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 32px 32px 0 0;
+}
+
+/* High-Fidelity Single-Layer Progressive Blur for Header */
+.sheet-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 32px 32px 0 0;
+
+    /* Strong Blur Baseline -> Boosted to 40px */
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+
+    /* White Fills */
+    background: hsla(0, 0%, 100%, 0.8);
+
+    /* Ultra-Smooth 40px progressive mask for Header */
+    -webkit-mask-image: linear-gradient(to bottom,
+            black 0%,
+            black 20%,
+            rgba(0, 0, 0, 0.8) 40%,
+            rgba(0, 0, 0, 0.4) 65%,
+            transparent 95%);
+    mask-image: linear-gradient(to bottom,
+            black 0%,
+            black 20%,
+            rgba(0, 0, 0, 0.8) 40%,
+            rgba(0, 0, 0, 0.4) 65%,
+            transparent 95%);
+}
+
+.sheet-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #181a1c;
+    margin-top: 8px;
+}
+
+.close-icon-btn {
+    background: #f3f5f7;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #181a1c;
+    z-index: 105;
+}
+
+.sheet-body {
+    width: 100%;
+    flex: 1;
+    /* Take up remaining space */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    /* Padding to accommodate floating header & footer */
+    padding: 92px 24px 120px 24px;
+
+    -webkit-overflow-scrolling: touch;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+
+    /* Hide scrollbars */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.sheet-body::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.sheet-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    /* Definitely above surface */
+    /* Above surface (100) and headers */
+    padding: 24px;
+    background: transparent;
+    transform: translateY(100%);
+    transition: transform var(--motion-duration) var(--motion-easing);
+    display: block;
+}
+
+.sheet-overlay.open .sheet-footer {
+    transform: translateY(0) !important;
+}
+
+/* High-Fidelity Single-Layer Progressive Blur for Footer */
+.sheet-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    /* Strong Blur Baseline */
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+
+    /* Background with opacity triggers the blur better on some engines */
+    background: rgba(255, 255, 255, 0.7);
+
+    /* Ultra-Smooth 40px progressive mask */
+    -webkit-mask-image: linear-gradient(to top,
+            black 0%,
+            black 20%,
+            rgba(0, 0, 0, 0.8) 40%,
+            rgba(0, 0, 0, 0.4) 65%,
+            transparent 95%);
+    mask-image: linear-gradient(to top,
+            black 0%,
+            black 20%,
+            rgba(0, 0, 0, 0.8) 40%,
+            rgba(0, 0, 0, 0.4) 65%,
+            transparent 95%);
+}
+
+/* Internal Visuals */
+.info-list {
+    list-style: none;
+    margin-bottom: 24px;
+}
+
+.info-list li {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.divider {
+    display: none;
+    /* Removed as per user request */
+}
+
+.badge-blue {
+    color: #006aff;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.badge-blue span {
+    background: #006aff;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.price-row .label {
+    color: #111;
+    font-weight: 600;
+}
+
+.price-row .price {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-row .price .free-badge {
+    color: #00b96b;
+    font-weight: 700;
+    gap: 2px;
+}
+
+.primary-btn.black-style {
+    background: #000;
+    color: #fff;
+    height: 56px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 16px;
+}
+
+
+/* STEPPER PLAYGROUND */
+.stepper-playground {
+    padding: 40px;
+    margin: 40px auto;
+    width: 100%;
+    max-width: 1200px;
+}
+
+
+.exp-comparison {
+    display: flex;
+    gap: 60px;
+    width: 100%;
+}
+
+.exp-column {
+    flex: 1;
+}
+
+.exp-header {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.exp-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+}
+
+.exp-header p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.stepper-variant h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #111;
+    letter-spacing: -0.5px;
+}
+
+.product-grid {
+    display: flex;
+    gap: 16px;
+}
+
+.product-card {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centered as requested */
+    text-align: center;
+    /* Centered as requested */
+    overflow: hidden;
+    /* Ensure thumbnail doesn't spill over card radius */
+    background: var(--card-bg);
+    border-radius: 16px;
+    margin-bottom: 0;
+    /* Use grid gap instead */
+    height: fit-content;
+    min-height: fit-content;
+}
+
+.thumbnail {
+    position: relative;
+    width: 100%;
+    /* Fill card width */
+    height: 160px;
+    background: #f3f5f7;
+    /* Removed margin-bottom and top border-radius to match card */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Changed from contain to cover to eliminate internal margins */
+    border-radius: 16px 16px 0 0;
+    /* Match card top radius */
+}
+
+/* The Core Stepper Morphing */
+.stepper-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 38px;
+    width: 38px;
+    background: #fff;
+    border-radius: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    /* 6px padding to align 26px buttons to ends */
+    box-sizing: border-box;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+    overflow: hidden;
+    z-index: 5;
+}
+
+/* Size Variants for the Card */
+.product-card.size-150 {
+    width: 150px;
+}
+
+.product-card.size-150 .thumbnail {
+    height: 150px;
+}
+
+.product-card.size-107 {
+    width: 107px;
+}
+
+.product-card.size-107 .thumbnail {
+    height: 90px;
+}
+
+/* Stepper Margin Adjustment for 107px cards */
+.product-card.size-107 .stepper-container {
+    bottom: 6px;
+    right: 6px;
+}
+
+.product-card.size-107 .stepper-container.active {
+    width: calc(100% - 12px);
+    /* 6px on both sides */
+}
+
+/* Active Morph (Filled) */
+.stepper-container.active {
+    width: calc(100% - 20px);
+}
+
+.step-btn {
+    width: 26px;
+    /* Internal button size 26x26 */
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.step-btn:hover {
+    background-color: var(--fill-hovered);
+}
+
+.step-btn:active {
+    background-color: var(--fill-pressed);
+}
+
+.step-btn.minus {
+    background-image: url('/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_0_1766130011803.png');
+    background-size: 18px 18px;
+    /* 18px icon in stepper */
+}
+
+/* Plus button placeholder: hidden but holds space at the right end */
+.step-btn.plus {
+    width: 26px;
+    height: 26px;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.stepper-container.active .step-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.step-count {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    opacity: 0;
+    transition: opacity 0.2s ease 0.1s;
+}
+
+.product-card.size-107 .step-count {
+    font-size: 13px;
+    min-width: 14px;
+}
+
+.stepper-container.active .step-count {
+    opacity: 1;
+}
+
+/* Persistent Add Button (+) - Handles both initial (38x38) and active (26x26) states */
+.add-initial-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 38px;
+    height: 38px;
+    background: transparent;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    background-image: url('/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1_1766130011803.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px 24px;
+    border-radius: 50%;
+    transition: background-size 0.2s ease,
+        background-color 0.2s ease,
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-initial-btn:hover {
+    background-color: var(--fill-hovered);
+}
+
+.add-initial-btn:active {
+    background-color: var(--fill-pressed);
+}
+
+.border-variant .add-initial-btn {
+    top: -1px;
+    right: -1px;
+}
+
+.stepper-container.active .add-initial-btn {
+    width: 26px;
+    /* Shrink to internal size when active */
+    height: 26px;
+    top: 6px;
+    /* Center vertically in 38px container */
+    right: 6px;
+    /* Align with 6px padding */
+    background-size: 18px 18px;
+}
+
+.border-variant .stepper-container.active .add-initial-btn {
+    top: 5px;
+    /* Inside the 1px border: (36-26)/2 = 5 */
+    right: 5px;
+}
+
+/* Product Details */
+.product-info {
+    padding: 16px;
+    /* Move card padding here */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.product-card.size-107 .product-info {
+    padding: 8px 4px;
+    /* Tighter padding for 107 */
+}
+
+.product-info .name {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 100%;
+    /* Ensure full width for text centering */
+}
+
+.product-card.size-107 .name {
+    font-size: 11px;
+    /* Smaller font for 107 */
+    margin-bottom: 2px;
+}
+
+.price-info {
+    display: flex;
+    gap: 4px;
+    align-items: baseline;
+    justify-content: center;
+    /* Centered as requested */
+    margin-bottom: 4px;
+}
+
+.product-card.size-107 .price-info {
+    font-size: 11px;
+}
+
+.price-info .discount {
+    color: #ff3b30;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.price-info .price {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.promo-badge {
+    display: inline-block;
+    color: #ff3b30;
+    background: #fff1f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    width: fit-content;
+}
+
+.rating {
+    font-size: 12px;
+    color: #666;
+    width: 100%;
+    text-align: center;
+    /* Centered as requested */
+}
+
+/* Stepper Variants (Applied to the container, cards are clean) */
+.shadow-variant .stepper-container {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.border-variant .stepper-container {
+    border: 1px solid #e0e0e0;
+}
+
+.blur-variant .stepper-container {
+    background: hsla(0, 0%, 100%, 0.75);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 0.5px solid rgba(255, 255, 255, 0.3);
+    /* box-shadow removed as requested */
+}
+
+.blur-variant .stepper-container.active {
+    background: hsla(0, 0%, 100%, 0.85);
+}
+
+/* Experimental Group B: Fixed Icon Size (24px) & Full Height (38px) buttons */
+.exp-b .stepper-container {
+    padding: 0;
+    /* Align full-height 38px buttons to edges */
+}
+
+.exp-b .step-btn {
+    width: 38px;
+    height: 38px;
+    background-size: 24px 24px;
+    /* Maintain large icon */
+}
+
+.exp-b .add-initial-btn {
+    width: 38px;
+    height: 38px;
+    background-size: 24px 24px;
+    top: 0;
+    right: 0;
+}
+
+.exp-b .stepper-container.active .add-initial-btn {
+    width: 38px;
+    height: 38px;
+    top: 0;
+    right: 0;
+    background-size: 24px 24px;
+    /* No shrink in Group B */
+}
+
+/* Compensate Border Style for Group B */
+.exp-b.border-variant .add-initial-btn {
+    top: -1px;
+    right: -1px;
+}
+
+.exp-b.border-variant .stepper-container.active .add-initial-btn {
+    top: -1px;
+    right: -1px;
+}
+
+/* PAGE INDICATOR PLAYGROUND */
+.indicator-playground {
+    display: flex;
+    justify-content: center;
+    padding: 60px 0;
+}
+
+.mock-product-preview {
+    width: 375px;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.product-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: #f0f0f0;
+}
+
+.product-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.close-overlay-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.product-details {
+    padding: 24px;
+}
+
+.product-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.product-review {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.review-thumbnails {
+    display: flex;
+    gap: 8px;
+}
+
+.review-thumbnails .thumb {
+    width: 76px;
+    height: 76px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #eee;
+}
+
+.review-thumbnails .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.review-thumbnails .more-pics {
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.review-thumbnails .more-pics span {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* INDICATOR BASE */
+.indicator-container {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    min-width: 94px;
+    /* Ensure stability during pill expansion/contraction */
+    border-radius: 20px;
+    z-index: 10;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Material Blur for Containers */
+.indicator-container.type-dot,
+.indicator-container.type-pill-container {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 8px;
+    /* Uniform padding on all sides */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Added gap for dot spacing consistency */
+}
+
+/* 1. Classic Dot Container */
+.type-dot .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    transition: background 0.3s ease;
+}
+
+.type-dot .dot.active {
+    background: #fff;
+    transform: scale(1.2);
+    /* Classic dot does not stretch with progress */
+    transition: transform 0.3s ease;
+}
+
+/* 2. Pill-in-Container & 3. Floating Pill */
+
+.type-floating-pill {
+    padding: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+
+.dot-track {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.type-pill-container .dot,
+.type-floating-pill .dot,
+.type-play-pause .dot,
+.type-separated-indicators .dot {
+    position: relative;
+    width: 6px;
+    /* Base dot container */
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: width var(--motion-duration) var(--motion-easing);
+}
+
+.type-pill-container .dot.active,
+.type-floating-pill .dot.active,
+.type-play-pause .dot.active,
+.type-separated-indicators .dot.active {
+    width: 22px;
+    /* Secured track width when active */
+}
+
+.dot-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 8px;
+    background: #fff;
+    border-radius: 4px;
+    /* We don't use CSS transition here for progress filling as it's driven by JS tick,
+       but for the base state it's fine. The progress filling is linear by request,
+       but the expansion itself can be eased. */
+}
+
+.dot.active .dot-fill {
+    width: calc(6px + (var(--progress, 0) * (100% - 6px)));
+}
+
+/* 4. Sliding Bar (Segmented) */
+.indicator-container.type-sliding-bar {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    min-width: 0;
+    /* Reset base stability min-width */
+    padding: 0;
+    margin: 0;
+    gap: 4px;
+    justify-content: space-between;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-sizing: border-box;
+}
+
+/* 5. Numeric Badge */
+.type-numeric-badge {
+    left: auto;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 0 12px;
+    height: 24px;
+    min-width: 44px;
+    /* Prevent width shift when numbers change */
+    justify-content: center;
+    /* Keep content centered within min-width */
+    border-radius: 8px;
+    /* Updated radius */
+    color: #fff;
+    font-size: 13px;
+    /* ui/caption/large emphasized */
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+}
+
+/* 1. Play/Pause Indicator (Design matched to Example 2) */
+.indicator-container.type-play-pause {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 8px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.play-pause-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    /* Added padding for larger hit area */
+    margin: -6px;
+    /* Negative margin to prevent shifting layout too much */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.play-pause-btn:hover {
+    opacity: 1;
+}
+
+.play-pause-btn svg {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+/* 2. Separated Controls Example */
+.bottom-controls-left-group {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.control-pill {
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.control-pill .close-icon-btn {
+    background: none !important;
+    border: none;
+    padding: 0;
+    width: auto !important;
+    height: auto !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    color: #fff;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.control-pill .close-icon-btn:hover {
+    opacity: 1;
+}
+
+.control-pill .close-icon-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.indicator-container.type-separated-indicators {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* Card Close Button */
+.card-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.45) !important;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    width: 32px !important;
+    height: 32px !important;
+    aspect-ratio: 1 / 1;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff !important;
+    z-index: 20;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-close-btn:hover {
+    background: rgba(0, 0, 0, 0.6) !important;
+    transform: scale(1.05);
+}
+
+.card-close-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* 4. Sliding Bar (Segmented) - Instant Image Change */
+.product-card-v2[data-type="sliding-bar"] .panning-strip {
+    transition: none;
+    /* Instant image swap */
+}
+
+.bar-segment {
+    flex: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: #fff;
+    /* JS tick drives progress linearly, but we keep a small transition for smoothness */
+}
+
+.bar-segment.active .bar-active {
+    width: calc(var(--progress, 0) * 100%);
+}
+
+.bar-segment.filled .bar-active {
+    width: 100%;
+}
+
+
+/* Page Indicator Refine: Grid & V2 Cards */
+.indicator-playground {
+    flex-direction: column;
+    gap: 48px;
+    align-items: center;
+}
+
+.indicator-reference {
+    width: 100%;
+    background: #181a1c;
+    padding: 24px;
+    border-radius: 24px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.indicator-reference .product-visual.no-pan {
+    cursor: default;
+    border-radius: 12px;
+    border: none;
+    aspect-ratio: auto;
+}
+
+.indicator-reference h3 {
+    margin-bottom: 16px;
+    font-size: 14px;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    /* Expanded for 4 columns */
+}
+
+.product-card-v2 {
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    /* Only top radius */
+    overflow: hidden;
+    min-width: 240px;
+    /* Prevent layout collapse */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card-v2:hover {
+    /* removed translateY lift */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.product-card-v2 .product-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    cursor: grab;
+    background: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    user-select: none;
+}
+
+.panning-strip {
+    display: flex;
+    width: 600%;
+    /* 6 images for seamless loop */
+    height: 100%;
+    transition: transform var(--motion-duration) var(--motion-easing);
+    will-change: transform;
+}
+
+.panning-strip img {
+    width: 16.6666%;
+    /* 1/6 of the strip */
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.product-card-v2 .product-details {
+    padding: 16px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.product-card-v2 .product-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #181a1c;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.share-icon {
+    color: #181a1c;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.review-row {
+    font-size: 13px;
+    color: #181a1c;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.review-row .chevron {
+    opacity: 0.6;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.mini-stepper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 12px;
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.mini-stepper button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #181a1c;
+    padding: 0;
+}
+
+.mini-stepper .count {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 12px;
+    text-align: center;
+}
+
+.price-row .price {
+    font-size: 18px;
+    font-weight: 800;
+    color: #181a1c;
+}

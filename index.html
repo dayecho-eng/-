@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실험실</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="handoff-container">
+
+        <!-- Sidebar / Controls -->
+        <aside class="controls">
+            <header>
+                <h1>실험실</h1>
+                <span class="badge">PROD-READY</span>
+            </header>
+
+            <div class="control-group">
+                <label>Motion Variant</label>
+                <select id="motionSelect">
+                    <option value="Smooth.Default">Smooth Default</option>
+                    <option value="Smooth.Fast">Smooth Fast</option>
+                    <option value="Smooth.Fastest">Smooth Fastest</option>
+                    <option value="Snappy.Default">Snappy Default</option>
+                    <option value="Snappy.Fast">Snappy Fast</option>
+                    <option value="Snappy.Fastest">Snappy Fastest</option>
+                    <option value="Bouncy.Default">Bouncy Default</option>
+                    <option value="Bouncy.Fast">Bouncy Fast</option>
+                    <option value="Bouncy.Fastest">Bouncy Fastest</option>
+                </select>
+            </div>
+
+            <div class="specs">
+                <h3>Current Tokens</h3>
+                <div class="token-display">
+                    <div class="token-row">
+                        <span>Web Duration</span>
+                        <code id="val-web-dur">0.3s</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Component Selection -->
+            <div class="control-group">
+                <label>Components</label>
+                <nav class="component-nav">
+                    <button class="nav-item active" data-view="sheet">
+                        <span class="icon">📄</span> Sheet
+                    </button>
+                    <button class="nav-item" data-view="stepper">
+                        <span class="icon">🔢</span> Stepper
+                    </button>
+                    <button class="nav-item" data-view="page-indicator">
+                        <span class="icon">🔘</span> Page Indicator
+                    </button>
+                </nav>
+            </div>
+
+            <div class="control-group">
+                <label>Main Actions</label>
+                <div id="sheet-actions">
+                    <button class="primary-btn full-width" id="openSheetBtn">Open Sheet</button>
+                </div>
+                <div id="stepper-actions" class="hidden">
+                    <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
+                        <strong>실험 A그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Small</strong>
+                    </p>
+                    <p style="font-size: 13px; color: #666; line-height: 1.4;">
+                        <strong>실험 B그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Medium</strong>
+                    </p>
+                </div>
+                <div id="page-indicator-actions" class="hidden">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="primary-btn" id="prevIndicatorBtn" style="flex: 1;">Prev</button>
+                        <button class="primary-btn" id="nextIndicatorBtn" style="flex: 1;">Next</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Preview Area -->
+        <main class="preview-area">
+
+            <!-- Sheet View -->
+            <div id="view-sheet" class="component-view">
+                <!-- Code content omited for brevity in this tool call context, but normally I'd keep it all -->
+                <div class="code-viewer">
+                    <div class="tabs">
+                        <button class="tab active" data-target="web">Web (CSS)</button>
+                        <button class="tab" data-target="swift">SwiftUI</button>
+                        <button class="tab" data-target="compose">Jetpack Compose</button>
+                    </div>
+                    <div class="code-content active" id="code-web">
+                        <pre><code class="language-css">.sheet-container { --sheet-radius: 20px; ... }</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Indicator View -->
+            <div id="view-page-indicator" class="component-view hidden">
+                <div class="indicator-grid">
+                    <!-- 1. Play/Pause Indicator (Floating) -->
+                    <div class="product-card-v2" data-type="play-pause">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-play-pause" data-type="play-pause">
+                                <div class="dot-track">
+                                    <div class="dot active">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <button class="play-pause-btn" id="playPauseToggle">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <rect x="6" y="4" width="4" height="16"></rect>
+                                            <rect x="14" y="4" width="4" height="16"></rect>
+                                        </svg>
+                                    </button>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">1. Play/Pause</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 2. Separated Controls Indicator -->
+                    <div class="product-card-v2" data-type="separated-controls">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <!-- Bottom Controls Group (Left Aligned) -->
+                            <div class="bottom-controls-left-group">
+                                <!-- Separated Indicators -->
+                                <div class="indicator-container type-separated-indicators"
+                                    data-type="separated-indicators">
+                                    <div class="dot-track">
+                                        <div class="dot active">
+                                            <div class="dot-fill"></div>
+                                        </div>
+                                        <div class="dot">
+                                            <div class="dot-fill"></div>
+                                        </div>
+                                        <div class="dot">
+                                            <div class="dot-fill"></div>
+                                        </div>
+                                        <div class="dot">
+                                            <div class="dot-fill"></div>
+                                        </div>
+                                        <div class="dot">
+                                            <div class="dot-fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Separated Controls Pill -->
+                                <div class="control-pill">
+                                    <button class="play-pause-btn multiple-instance">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <rect x="6" y="4" width="4" height="16"></rect>
+                                            <rect x="14" y="4" width="4" height="16"></rect>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">2. Separated Controls</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 3. Pill-in-Container -->
+                    <div class="product-card-v2" data-type="pill-container">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-pill-container" data-type="pill-container">
+                                <div class="dot-track">
+                                    <div class="dot active">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">3. Pill-in-Container</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Floating Pill -->
+                    <div class="product-card-v2" data-type="floating-pill">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-floating-pill" data-type="floating-pill">
+                                <div class="dot-track">
+                                    <div class="dot active">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                    <div class="dot">
+                                        <div class="dot-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">4. Floating Pill</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card-v2" data-type="sliding-bar">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-sliding-bar" data-type="sliding-bar">
+                                <div class="bar-segment">
+                                    <div class="bar-active"></div>
+                                </div>
+                                <div class="bar-segment">
+                                    <div class="bar-active"></div>
+                                </div>
+                                <div class="bar-segment">
+                                    <div class="bar-active"></div>
+                                </div>
+                                <div class="bar-segment">
+                                    <div class="bar-active"></div>
+                                </div>
+                                <div class="bar-segment">
+                                    <div class="bar-active"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">5. Sliding Bar</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card-v2" data-type="numeric-badge">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-numeric-badge" data-type="numeric-badge">
+                                <span class="current">1</span> / <span class="total">5</span>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">6. Numeric Badge</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Classic Dot Container -->
+                    <div class="product-card-v2" data-type="dot">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_0_1767762764199.jpg"
+                                    alt="Food 2">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1_1767762764199.png"
+                                    alt="Food 3">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_2_1767762764199.jpg"
+                                    alt="Food 4">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_3_1767762764199.jpg"
+                                    alt="Food 5">
+                                <img src="/Users/daye/.gemini/antigravity/brain/a1d95427-22b2-48a7-8747-a0ae36f0c23e/uploaded_image_1767762453845.png"
+                                    alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-dot" data-type="dot">
+                                <div class="dot active"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">7. Classic Dot</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stepper View -->
+            <div id="view-stepper" class="component-view hidden">
+                <div class="stepper-playground">
+                    <div class="exp-comparison">
+                        <!-- Group A: Small -->
+                        <div class="exp-column" id="group-a">
+                            <div class="exp-header">
+                                <h2>Experimental Group A (Small)</h2>
+                                <p>내부 버튼 사이즈: 26x26 (아이콘: 18x18)</p>
+                            </div>
+                            <!-- Shadow Style -->
+                            <div class="stepper-variant">
+                                <h3>Shadow Style</h3>
+                                <div class="product-grid">
+                                    <div class="product-card shadow-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="ga_s160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card shadow-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="ga_s107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Border Style -->
+                            <div class="stepper-variant" style="margin-top: 32px;">
+                                <h3>Border Style</h3>
+                                <div class="product-grid">
+                                    <div class="product-card border-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="ga_b160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card border-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="ga_b107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Blur Style -->
+                            <div class="stepper-variant" style="margin-top: 32px;">
+                                <h3>Blur Style</h3>
+                                <div class="product-grid">
+                                    <div class="product-card blur-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="ga_bl160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card blur-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="ga_bl107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Group B: Medium -->
+                        <div class="exp-column" id="group-b">
+                            <div class="exp-header">
+                                <h2>Experimental Group B (Medium)</h2>
+                                <p>내부 버튼 사이즈: 38x38 (아이콘: 24x24)</p>
+                            </div>
+                            <!-- Shadow Style -->
+                            <div class="stepper-variant">
+                                <h3>Shadow Style</h3>
+                                <div class="product-grid exp-b">
+                                    <div class="product-card shadow-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="gb_s160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card shadow-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="gb_s107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Border Style -->
+                            <div class="stepper-variant" style="margin-top: 32px;">
+                                <h3>Border Style</h3>
+                                <div class="product-grid exp-b">
+                                    <div class="product-card border-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="gb_b160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card border-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="gb_b107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Blur Style -->
+                            <div class="stepper-variant" style="margin-top: 32px;">
+                                <h3>Blur Style</h3>
+                                <div class="product-grid exp-b">
+                                    <div class="product-card blur-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="gb_bl160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card blur-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1766129096011.png"
+                                                alt="Yoplait">
+                                            <div class="stepper-container" data-id="gb_bl107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- The Actual Sheet Component -->
+    <div class="sheet-overlay" id="sheetOverlay">
+        <div class="sheet-backdrop"></div>
+        <div class="sheet-surface" id="sheetSurface">
+            <!-- Drag Handle -->
+            <div class="sheet-handle"></div>
+            <div class="sheet-header" id="sheetHeader">
+                <h2>배달 안내</h2>
+                <button class="close-icon-btn" id="headerCloseBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="sheet-body">
+                <ul class="info-list">
+                    <li>• 거리, 시간대, 지역, 배달방식, 할인, 배민클럽 혜택, 사장님이 사용하는 요금제 등에 따라 배달팁이 달라져요.</li>
+                    <li>• 배달 안내사항이 길어질 경우 어떻게 스크롤되는지 확인하기 위한 테스트 텍스트입니다.</li>
+                    <li>• 두 번째 항목: 상세한 배달 정책 안내가 여기에 포함될 수 있습니다.</li>
+                    <li>• 세 번째 항목: 지역별 추가 할증료에 대한 안내입니다.</li>
+                    <li>• 네 번째 항목: 우천 시 또는 폭설 시 배달 지연 가능성에 대한 안내입니다.</li>
+                    <li>• 다섯 번째 항목: 배달 상태를 실시간으로 확인할 수 있는 방법에 대한 안내입니다.</li>
+                    <li>• 여섯 번째 항목: 취소 및 환불 규정에 대한 상세 내용입니다.</li>
+                    <li>• 일곱 번째 항목: 고객 센터 연결 방법 및 운영 시간 안내입니다.</li>
+                    <li>• 여덟 번째 항목: 위생 수칙 준수 사항에 대한 안내입니다.</li>
+                    <li>• 아홉 번째 항목: 리뷰 이벤트 참여 방법과 혜택 안내입니다.</li>
+                    <li>• 열 번째 항목: 단체 주문 시 유의사항에 대한 설명입니다.</li>
+                    <li>• 열한 번째 항목: 배달 가방 및 보온/보냉 팩 사용에 대한 기술적 설명입니다.</li>
+                    <li>• 열두 번째 항목: 무인 택배함 또는 문 앞 배달 선택 시 확인해야 할 사항입니다.</li>
+                    <li>• 열세 번째 항목: 알레르기 유발 성분에 대한 사전 고지 의무 안내입니다.</li>
+                    <li>• 열네 번째 항목: 원산지 표시 준수 및 확인 방법에 대한 안내입니다.</li>
+                    <li>• 열다섯 번째 항목: 에코 주문(일회용품 제외) 참여 독려 메시지입니다.</li>
+                    <li>• 열여섯 번째 항목: 포인트 적립 및 사용 한도에 대한 정책입니다.</li>
+                    <li>• 열일곱 번째 항목: 결제 수단별 영수증 발급 방법입니다.</li>
+                    <li>• 열여덟 번째 항목: 기사님 매너 평가 및 피드백 전달 방법입니다.</li>
+                    <li>• 열아홉 번째 항목: 야간 배달 시 소음 방지를 위한 협조 요청입니다.</li>
+                    <li>• 스무 번째 항목: 마지막으로, 스크롤이 충분히 발생하는지 확인하기 위한 끝부분 텍스트입니다.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="sheet-footer" id="sheetFooter">
+            <button class="primary-btn full-width black-style" id="footerConfirmBtn">버튼</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
