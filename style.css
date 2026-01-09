@@ -745,7 +745,7 @@ code {
 }
 
 .step-btn.minus {
-    background-image: url('/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_0_1766130011803.png');
+    background-image: url('./🩵minus.svg');
     background-size: 18px 18px;
     /* 18px icon in stepper */
 }
@@ -797,7 +797,7 @@ code {
     z-index: 10;
     opacity: 1 !important;
     pointer-events: auto !important;
-    background-image: url('/Users/daye/.gemini/antigravity/brain/8d79fa2e-944f-4424-8539-ddc2d9829bde/uploaded_image_1_1766130011803.png');
+    background-image: url('./🩵plus.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 24px 24px;
@@ -1548,6 +1548,12 @@ code {
     justify-content: center;
     color: #181a1c;
     padding: 0;
+}
+
+.mini-stepper button img {
+    display: block;
+    width: 14px;
+    height: 14px;
 }
 
 .mini-stepper .count {
