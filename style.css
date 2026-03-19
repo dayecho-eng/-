@@ -2282,24 +2282,14 @@ code {
     opacity: 1;
 }
 
-.dialog-container.variant-F .dialog-top {
+/* Variant F: unified content reveal (no top/bottom split) */
+.dialog-container.variant-F .dialog-content-wrapper {
     opacity: 0;
     transform: translateY(8px);
     transition: all 0.334s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.dialog-layer.open .dialog-container.variant-F .dialog-top {
+.dialog-layer.open .dialog-container.variant-F .dialog-content-wrapper {
     transition-delay: 0.1s;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.dialog-container.variant-F .dialog-bottom {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.334s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.dialog-layer.open .dialog-container.variant-F .dialog-bottom {
-    transition-delay: 0.2s;
     opacity: 1;
     transform: translateY(0);
 }

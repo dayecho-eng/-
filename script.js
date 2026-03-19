@@ -756,7 +756,7 @@ function initDialogAlert() {
         'F': {
             memo: '얌전 등장<br>버튼 scale 피드백<br>컨텐츠가 늦게 나타남 (Y position 모션 포함)',
             enter: 'DEFAULT_BOUNCY (0.334s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.8 → 1',
-            reveal: 'Top Content Delay 0.1s<br>Footer Delay 0.2s<br>SLOW_SNAPPY (0.334s, bounce 0)<br>Opacity 0 → 1<br>Y 8 → 0',
+            reveal: 'Delay 0.1s<br>SLOW_SNAPPY (0.334s, bounce 0)<br>Opacity 0 → 1<br>Y 8 → 0',
             press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
         }
     };
