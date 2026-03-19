@@ -59,13 +59,24 @@
                     <button class="nav-item" data-view="stepper">
                         <span class="icon">🔢</span> Stepper
                     </button>
-                    <button class="nav-item" data-view="page-indicator">
-                        <span class="icon">🔘</span> Page Indicator
+                    <div class="nav-group">
+                        <button class="nav-item" data-view="page-indicator">
+                            <span class="icon">🔘</span> Page Indicator
+                        </button>
+                        <div class="sub-nav">
+                            <button class="sub-nav-item" data-category="play-pause">Play/Pause Indicator</button>
+                            <button class="sub-nav-item" data-category="classic">Classic Indicator</button>
+                            <button class="sub-nav-item" data-category="sliding-bar">Sliding Bar</button>
+                            <button class="sub-nav-item" data-category="numeric">Page Counter</button>
+                        </div>
+                    </div>
+                    <button class="nav-item" data-view="dialog-alert">
+                        <span class="icon">💬</span> Dialog / Alert
                     </button>
                 </nav>
             </div>
 
-            <div class="control-group">
+            <div class="control-group main-actions-group">
                 <label>Main Actions</label>
                 <div id="sheet-actions">
                     <button class="primary-btn full-width" id="openSheetBtn">Open Sheet</button>
@@ -83,6 +94,12 @@
                         <button class="primary-btn" id="prevIndicatorBtn" style="flex: 1;">Prev</button>
                         <button class="primary-btn" id="nextIndicatorBtn" style="flex: 1;">Next</button>
                     </div>
+                </div>
+                <div id="dialog-alert-actions" class="hidden">
+                    <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
+                        <strong>Variants A-F 실험</strong><br>
+                        Figma Intercation Test
+                    </p>
                 </div>
             </div>
         </aside>
@@ -109,7 +126,7 @@
             <div id="view-page-indicator" class="component-view hidden">
                 <div class="indicator-grid">
                     <!-- 1. Play/Pause Indicator (Floating) -->
-                    <div class="product-card-v2" data-type="play-pause">
+                    <div class="product-card-v2" data-type="play-pause" data-category="play-pause">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -127,16 +144,16 @@
                                 <img src="./Image.png" alt="Food 1 Clone">
                             </div>
                             <div class="indicator-container type-play-pause" data-type="play-pause">
+                                <button class="play-pause-btn" id="playPauseToggle">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="6" y="4" width="4" height="16"></rect>
+                                        <rect x="14" y="4" width="4" height="16"></rect>
+                                    </svg>
+                                </button>
                                 <div class="dot-track">
                                     <div class="dot active">
                                         <div class="dot-fill"></div>
                                     </div>
-                                    <button class="play-pause-btn" id="playPauseToggle">
-                                        <svg viewBox="0 0 24 24" fill="currentColor">
-                                            <rect x="6" y="4" width="4" height="16"></rect>
-                                            <rect x="14" y="4" width="4" height="16"></rect>
-                                        </svg>
-                                    </button>
                                     <div class="dot">
                                         <div class="dot-fill"></div>
                                     </div>
@@ -154,7 +171,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">1. Play/Pause</h2>
+                                <h2 class="product-title">Play/Pause</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -175,11 +192,11 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -189,7 +206,7 @@
 
 
                     <!-- 2. Separated Controls Indicator -->
-                    <div class="product-card-v2" data-type="separated-controls">
+                    <div class="product-card-v2" data-type="separated-controls" data-category="play-pause">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -242,7 +259,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">2. Separated Controls</h2>
+                                <h2 class="product-title">Separated Controls</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -263,11 +280,11 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -277,7 +294,7 @@
 
 
                     <!-- 3. Pill-in-Container -->
-                    <div class="product-card-v2" data-type="pill-container">
+                    <div class="product-card-v2" data-type="pill-container" data-category="classic">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -316,7 +333,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">3. Pill-in-Container</h2>
+                                <h2 class="product-title">Pill-in-Container</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -337,11 +354,11 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -350,7 +367,7 @@
                     </div>
 
                     <!-- 4. Floating Pill -->
-                    <div class="product-card-v2" data-type="floating-pill">
+                    <div class="product-card-v2" data-type="floating-pill" data-category="classic">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -389,7 +406,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">4. Floating Pill</h2>
+                                <h2 class="product-title">Floating Pill</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -410,11 +427,11 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -422,7 +439,7 @@
                         </div>
                     </div>
 
-                    <div class="product-card-v2" data-type="sliding-bar">
+                    <div class="product-card-v2" data-type="sliding-bar" data-category="sliding-bar">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -459,7 +476,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">5. Sliding Bar</h2>
+                                <h2 class="product-title">Sliding Bar</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -480,11 +497,11 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -492,64 +509,297 @@
                         </div>
                     </div>
 
-                    <div class="product-card-v2" data-type="numeric-badge">
-                        <div class="product-visual">
-                            <button class="close-icon-btn card-close-btn">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                            <div class="panning-strip">
-                                <img src="./Image.png" alt="Food 1">
-                                <img src="./Image-1.png" alt="Food 2">
-                                <img src="./Image-2.png" alt="Food 3">
-                                <img src="./Image-3.png" alt="Food 4">
-                                <img src="./Image-4.png" alt="Food 5">
-                                <img src="./Image.png" alt="Food 1 Clone">
-                            </div>
-                            <div class="indicator-container type-numeric-badge" data-type="numeric-badge">
-                                <span class="current">1</span> / <span class="total">5</span>
+                    <!-- Section: clickable false -->
+                    <div class="category-header-group" data-category="numeric">
+                        <h3 class="category-title">clickable false</h3>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 바텀시트</span>
+                            <div class="product-card-v2" data-type="numeric-badge" data-category="numeric">
+                                <div class="product-visual">
+                                    <button class="close-icon-btn card-close-btn">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                    <div class="panning-strip">
+                                        <img src="./Image.png" alt="Food 1">
+                                        <img src="./Image-1.png" alt="Food 2">
+                                        <img src="./Image-2.png" alt="Food 3">
+                                        <img src="./Image-3.png" alt="Food 4">
+                                        <img src="./Image-4.png" alt="Food 5">
+                                        <img src="./Image.png" alt="Food 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-badge" data-type="numeric-badge">
+                                        <span class="current">1</span> / <span class="total">5</span>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="title-row">
+                                        <h2 class="product-title">clickable false</h2>
+                                        <span class="share-icon">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                                <polyline points="16 6 12 2 8 6"></polyline>
+                                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span>메뉴리뷰 (14,567)</span>
+                                        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="price-row">
+                                        <div class="mini-stepper">
+                                            <button class="minus">
+                                                <img src="./minus.svg" width="14" height="14" alt="minus">
+                                            </button>
+                                            <span class="count">1</span>
+                                            <button class="plus">
+                                                <img src="./plus.svg" width="14" height="14" alt="plus">
+                                            </button>
+                                        </div>
+                                        <div class="price">9,200원</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="product-details">
-                            <div class="title-row">
-                                <h2 class="product-title">6. Numeric Badge</h2>
-                                <span class="share-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                                        <polyline points="16 6 12 2 8 6"></polyline>
-                                        <line x1="12" y1="2" x2="12" y2="15"></line>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="review-row">
-                                <span>메뉴리뷰 (14,567)</span>
-                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                            <div class="price-row">
-                                <div class="mini-stepper">
-                                    <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
-                                    </button>
-                                    <span class="count">1</span>
-                                    <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
-                                    </button>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 배너</span>
+                            <div class="product-card-v2 banner-card" data-type="numeric-badge" data-category="numeric">
+                                <div class="product-visual">
+                                    <div class="panning-strip">
+                                        <img src="./banner1.png" alt="Banner 1">
+                                        <img src="./banner2.png" alt="Banner 2">
+                                        <img src="./banner3.png" alt="Banner 3">
+                                        <img src="./banner4.png" alt="Banner 4">
+                                        <img src="./banner1.png" alt="Banner 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-badge" data-type="numeric-badge">
+                                        <span class="current">1</span> / <span class="total">4</span>
+                                    </div>
                                 </div>
-                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-header-group" data-category="numeric">
+                        <h3 class="category-title">clickable true</h3>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 바텀시트</span>
+                            <div class="product-card-v2" data-type="numeric-new" data-category="numeric">
+                                <div class="product-visual">
+                                    <button class="close-icon-btn card-close-btn">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                    <div class="panning-strip">
+                                        <img src="./Image.png" alt="Food 1">
+                                        <img src="./Image-1.png" alt="Food 2">
+                                        <img src="./Image-2.png" alt="Food 3">
+                                        <img src="./Image-3.png" alt="Food 4">
+                                        <img src="./Image-4.png" alt="Food 5">
+                                        <img src="./Image.png" alt="Food 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-new" data-type="numeric-new">
+                                        <div class="content-overlap">
+                                            <div class="numeric-label">
+                                                <span class="current">1</span> / <span class="total">5</span>
+                                            </div>
+                                            <div class="view-all-label">모두보기</div>
+                                        </div>
+                                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="title-row">
+                                        <h2 class="product-title">clickable true</h2>
+                                        <span class="share-icon">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                                <polyline points="16 6 12 2 8 6"></polyline>
+                                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span>메뉴리뷰 (14,567)</span>
+                                        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="price-row">
+                                        <div class="mini-stepper">
+                                            <button class="minus">
+                                                <img src="./minus.svg" width="14" height="14" alt="minus">
+                                            </button>
+                                            <span class="count">1</span>
+                                            <button class="plus">
+                                                <img src="./plus.svg" width="14" height="14" alt="plus">
+                                            </button>
+                                        </div>
+                                        <div class="price">9,200원</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 배너</span>
+                            <div class="product-card-v2 banner-card" data-type="numeric-new" data-category="numeric">
+                                <div class="product-visual">
+                                    <div class="panning-strip">
+                                        <img src="./banner1.png" alt="Banner 1">
+                                        <img src="./banner2.png" alt="Banner 2">
+                                        <img src="./banner3.png" alt="Banner 3">
+                                        <img src="./banner4.png" alt="Banner 4">
+                                        <img src="./banner1.png" alt="Banner 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-new" data-type="numeric-new">
+                                        <div class="content-overlap">
+                                            <div class="numeric-label">
+                                                <span class="current">1</span> / <span class="total">4</span>
+                                            </div>
+                                            <div class="view-all-label">모두보기</div>
+                                        </div>
+                                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: clickable true (New Example) -->
+                    <div class="category-header-group" data-category="numeric">
+                        <h3 class="category-title">clickable true (New Example)</h3>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 바텀시트</span>
+                            <div class="product-card-v2" data-type="numeric-new" data-category="numeric">
+                                <div class="product-visual">
+                                    <button class="close-icon-btn card-close-btn">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                    <div class="panning-strip">
+                                        <img src="./Image.png" alt="Food 1">
+                                        <img src="./Image-1.png" alt="Food 2">
+                                        <img src="./Image-2.png" alt="Food 3">
+                                        <img src="./Image-3.png" alt="Food 4">
+                                        <img src="./Image-4.png" alt="Food 5">
+                                        <img src="./Image.png" alt="Food 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-new new-example-variant"
+                                        data-type="numeric-new">
+                                        <div class="content-overlap">
+                                            <div class="numeric-label">
+                                                <span class="current">1</span> / <span class="total">5</span>
+                                            </div>
+                                            <div class="view-all-label">모두보기</div>
+                                        </div>
+                                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="title-row">
+                                        <h2 class="product-title">clickable true (New Example)</h2>
+                                        <span class="share-icon">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                                <polyline points="16 6 12 2 8 6"></polyline>
+                                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span>메뉴리뷰 (14,567)</span>
+                                        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="price-row">
+                                        <div class="mini-stepper">
+                                            <button class="minus">
+                                                <img src="./minus.svg" width="14" height="14" alt="minus">
+                                            </button>
+                                            <span class="count">1</span>
+                                            <button class="plus">
+                                                <img src="./plus.svg" width="14" height="14" alt="plus">
+                                            </button>
+                                        </div>
+                                        <div class="price">9,200원</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-item">
+                            <span class="example-label">ㄴ 배너</span>
+                            <div class="product-card-v2 banner-card" data-type="numeric-new" data-category="numeric">
+                                <div class="product-visual">
+                                    <div class="panning-strip">
+                                        <img src="./banner1.png" alt="Banner 1">
+                                        <img src="./banner2.png" alt="Banner 2">
+                                        <img src="./banner3.png" alt="Banner 3">
+                                        <img src="./banner4.png" alt="Banner 4">
+                                        <img src="./banner1.png" alt="Banner 1 Clone">
+                                    </div>
+                                    <div class="indicator-container type-numeric-new new-example-variant"
+                                        data-type="numeric-new">
+                                        <div class="content-overlap">
+                                            <div class="numeric-label">
+                                                <span class="current">1</span> / <span class="total">4</span>
+                                            </div>
+                                            <div class="view-all-label">모두보기</div>
+                                        </div>
+                                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 7. Classic Dot Container -->
-                    <div class="product-card-v2" data-type="dot">
+                    <div class="product-card-v2" data-type="dot" data-category="classic">
                         <div class="product-visual">
                             <button class="close-icon-btn card-close-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -576,7 +826,7 @@
                         </div>
                         <div class="product-details">
                             <div class="title-row">
-                                <h2 class="product-title">7. Classic Dot</h2>
+                                <h2 class="product-title">Classic Dot</h2>
                                 <span class="share-icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -597,11 +847,72 @@
                             <div class="price-row">
                                 <div class="mini-stepper">
                                     <button class="minus">
-                                        <img src="./🩵minus.svg" width="14" height="14" alt="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
                                     </button>
                                     <span class="count">1</span>
                                     <button class="plus">
-                                        <img src="./🩵plus.svg" width="14" height="14" alt="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
+                                    </button>
+                                </div>
+                                <div class="price">9,200원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Classic Dot (No Pill) Container -->
+                    <div class="product-card-v2" data-type="dot" data-category="classic">
+                        <div class="product-visual">
+                            <button class="close-icon-btn card-close-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="panning-strip">
+                                <img src="./Image.png" alt="Food 1">
+                                <img src="./Image-1.png" alt="Food 2">
+                                <img src="./Image-2.png" alt="Food 3">
+                                <img src="./Image-3.png" alt="Food 4">
+                                <img src="./Image-4.png" alt="Food 5">
+                                <img src="./Image.png" alt="Food 1 Clone">
+                            </div>
+                            <div class="indicator-container type-dot no-pill" data-type="dot">
+                                <div class="dot active"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <div class="title-row">
+                                <h2 class="product-title">Classic Dot (No Pill)</h2>
+                                <span class="share-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="review-row">
+                                <span>메뉴리뷰 (14,567)</span>
+                                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="price-row">
+                                <div class="mini-stepper">
+                                    <button class="minus">
+                                        <img src="./minus.svg" width="14" height="14" alt="minus">
+                                    </button>
+                                    <span class="count">1</span>
+                                    <button class="plus">
+                                        <img src="./plus.svg" width="14" height="14" alt="plus">
                                     </button>
                                 </div>
                                 <div class="price">9,200원</div>
@@ -643,7 +954,7 @@
                                     </div>
                                     <div class="product-card shadow-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="ga_s107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -680,7 +991,7 @@
                                     </div>
                                     <div class="product-card border-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="ga_b107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -717,7 +1028,7 @@
                                     </div>
                                     <div class="product-card blur-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="ga_bl107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -762,7 +1073,7 @@
                                     </div>
                                     <div class="product-card shadow-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="gb_s107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -799,7 +1110,7 @@
                                     </div>
                                     <div class="product-card border-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="gb_b107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -836,7 +1147,7 @@
                                     </div>
                                     <div class="product-card blur-variant size-107">
                                         <div class="thumbnail">
-                                            <img src="./Image.png" alt="Yoplait">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="gb_bl107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
@@ -848,6 +1159,89 @@
                                             <div class="name">요플레</div>
                                             <div class="price-info"><span class="price">2,800원</span></div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dialog / Alert View -->
+            <div id="view-dialog-alert" class="component-view hidden">
+                <div class="stepper-playground playground-flex">
+                    <!-- Control Column -->
+                    <div class="exp-column">
+                        <div class="exp-header">
+                            <h2>Dialog / Alert Variants</h2>
+                            <p>A~F의 인터랙션 시안 실험</p>
+                        </div>
+                        
+                        <div class="variant-tabs">
+                            <button class="variant-tab active" data-variant="A">A</button>
+                            <button class="variant-tab" data-variant="B">B</button>
+                            <button class="variant-tab" data-variant="C">C</button>
+                            <button class="variant-tab" data-variant="D">D</button>
+                            <button class="variant-tab" data-variant="E">E</button>
+                            <button class="variant-tab" data-variant="F">F</button>
+                        </div>
+                        
+                        <div class="dialog-specs-box" id="dialogSpecsBox">
+                            <!-- Text updated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Preview Box -->
+                    <div class="preview-phone" id="dialogPreviewBox">
+                        <!-- Background Image Removed as per request -->
+                        
+                        <!-- Dialog Overlay Layer -->
+                        <div class="dialog-layer" id="dialogLayer">
+                            <div class="dialog-scrim" id="dialogScrim"></div>
+                            
+                            <!-- The Dialog Object -->
+                            <div class="dialog-container" id="dialogContainer">
+                                <!-- Shell Background (used for variant C, D, E, F separated timings) -->
+                                <div class="dialog-shell" id="dialogShell"></div>
+
+                                <!-- Inner Content Wrapper (fades in separately sometimes) -->
+                                <div class="dialog-content-wrapper" id="dialogContentWrapper">
+                                    
+                                    <!-- Dynamic Top Content (A,B,C,D,F vs E) -->
+                                    <div class="dialog-top" id="dialogTopRegular">
+                                        <div class="dialog-header-area">
+                                            <p class="dialog-title">배달팁은 어떻게 결정되나요?</p>
+                                        </div>
+                                        <div class="dialog-body-area">
+                                            <p class="dialog-subtitle">거리, 시간대, 지역, 배달방식, 할인, 배민클럽 혜택, 사장님이 사용하는 요금제 등에 따라 배달팁이 달라져요.</p>
+                                            <div class="dialog-divider"></div>
+                                            <div class="dialog-price-row">
+                                                <span>주문금액(17,500원)</span><span>4,000원</span>
+                                            </div>
+                                            <div class="dialog-price-row">
+                                                <span>추가거리(0.5km)</span><span>+500원</span>
+                                            </div>
+                                            <div class="dialog-price-row total">
+                                                <span>총 배달팁</span><span>4,500원</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="dialog-top hidden" id="dialogTopE">
+                                        <div class="dialog-image-area">
+                                            <img src="./Image.png" alt="Coupon Image" class="dialog-coupon-img">
+                                        </div>
+                                        <p class="dialog-coupon-title">
+                                            쿠폰함에 곧 사라지는<br><span class="highlight">12,000원 쿠폰</span>이 있어요
+                                        </p>
+                                    </div>
+
+                                    <!-- Bottom Action -->
+                                    <div class="dialog-bottom">
+                                        <div class="dialog-glass-surface"></div>
+                                        <button class="dialog-confirm-btn" id="dialogConfirmBtn">
+                                            <span class="btn-text">확인</span>
+                                            <div class="btn-state-layer"></div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

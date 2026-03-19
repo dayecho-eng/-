@@ -41,6 +41,8 @@ body {
 
 .controls {
     width: 320px;
+    min-width: 320px;
+    flex-shrink: 0;
     background: #fff;
     border-right: 1px solid #e0e0e0;
     padding: 24px;
@@ -51,6 +53,36 @@ body {
     position: sticky;
     top: 0;
     height: 100vh;
+}
+
+/* Category/Group Headers */
+.category-header-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.category-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.example-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.example-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    margin-left: 4px;
 }
 
 .preview-area {
@@ -126,6 +158,65 @@ header h1 {
 .nav-item .icon {
     font-size: 16px;
     margin-right: 8px;
+}
+
+/* Sub-navigation Styles */
+.nav-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.sub-nav {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+    padding-left: 28px;
+}
+
+/* Main Actions Section Separation */
+.main-actions-group {
+    margin-top: auto;
+    /* Push to bottom if space allows */
+    padding-top: 24px;
+    border-top: 2px solid #f3f5f7;
+}
+
+.main-actions-group label {
+    margin-bottom: 16px;
+    color: #181a1c;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Show sub-nav when the main nav-item in the same group is active */
+.nav-group:has(.nav-item.active) .sub-nav {
+    display: flex;
+}
+
+.sub-nav-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #666;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.sub-nav-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #333;
+}
+
+.sub-nav-item.active {
+    color: var(--accent-color);
+    background: rgba(0, 106, 255, 0.05);
 }
 
 .hidden {
@@ -745,7 +836,7 @@ code {
 }
 
 .step-btn.minus {
-    background-image: url('./🩵minus.svg');
+    background-image: url('./minus.svg');
     background-size: 18px 18px;
     /* 18px icon in stepper */
 }
@@ -797,7 +888,7 @@ code {
     z-index: 10;
     opacity: 1 !important;
     pointer-events: auto !important;
-    background-image: url('./🩵plus.svg');
+    background-image: url('./plus.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 24px 24px;
@@ -1108,12 +1199,20 @@ code {
     /* Added gap for dot spacing consistency */
 }
 
+.indicator-container.no-pill {
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+}
+
 /* 1. Classic Dot Container */
 .type-dot .dot {
     width: 6px;
     height: 6px;
     border-radius: 3px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     transition: background 0.3s ease;
 }
 
@@ -1203,7 +1302,7 @@ code {
     left: auto;
     right: 16px;
     background: rgba(0, 0, 0, 0.45);
-    padding: 0 12px;
+    padding: 0 10px;
     height: 24px;
     min-width: 44px;
     /* Prevent width shift when numbers change */
@@ -1271,6 +1370,8 @@ code {
     align-items: center;
     gap: 8px;
     z-index: 10;
+    width: 200px;
+    /* Stabilizes layout when Play/Pause moves */
 }
 
 .control-pill {
@@ -1330,6 +1431,192 @@ code {
     display: flex;
     align-items: center;
 }
+
+/* Numeric New Animation Styles */
+.indicator-container.type-numeric-new {
+    position: absolute;
+    left: auto;
+    right: 8px;
+    bottom: 8px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    width: fit-content;
+    min-width: 0;
+    z-index: 10;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        gap 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.type-numeric-new .numeric-label {
+    white-space: nowrap;
+}
+
+.type-numeric-new .transition-wrapper {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    gap: 0;
+}
+
+.type-numeric-new .view-all {
+    white-space: nowrap;
+    opacity: 1;
+    max-width: 100px;
+    min-width: 0;
+    flex-shrink: 1;
+    transition: max-width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.type-numeric-new .chevron-icon {
+    width: 12px;
+    height: 12px;
+    opacity: 0.6;
+    flex-shrink: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Shared Base Styles */
+.indicator-container.type-numeric-new {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0;
+}
+
+/* Base Transition Settings for Content */
+.indicator-container.type-numeric-new .view-all-label,
+.indicator-container.type-numeric-new .numeric-label {
+    white-space: nowrap;
+    overflow: hidden;
+    transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Chevron Shared */
+.indicator-container.type-numeric-new .chevron-icon {
+    opacity: 1;
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+}
+
+/* ==========================================================================
+   Standard Clickable True Variants (Side-by-Side -> Number Only)
+   ========================================================================== */
+/* Exclude new-example-variant to ensure separation */
+.indicator-container.type-numeric-new:not(.new-example-variant) .content-overlap {
+    display: flex;
+    /* Side by side */
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 4px;
+    gap: 4px;
+    /* Space between "1/5" and "View All" */
+}
+
+/* Default State: Both Visible */
+.indicator-container.type-numeric-new:not(.new-example-variant) .numeric-label {
+    opacity: 1;
+    max-width: 100px;
+}
+
+.indicator-container.type-numeric-new:not(.new-example-variant) .view-all-label {
+    opacity: 1;
+    max-width: 100px;
+}
+
+/* Animated State: View All Collapses */
+.indicator-container.type-numeric-new:not(.new-example-variant).is-animated .view-all-label {
+    opacity: 0;
+    max-width: 0;
+    margin-left: 0;
+    /* Remove potential gap spacing if applied via margin */
+}
+
+/* Number stays visible */
+
+/* Hover State: Restore View All */
+.indicator-container.type-numeric-new:not(.new-example-variant):hover .view-all-label {
+    opacity: 1 !important;
+    max-width: 100px !important;
+}
+
+
+/* ==========================================================================
+   New Example Variant (View All -> Number Swap via Overlap)
+   ========================================================================== */
+.indicator-container.type-numeric-new.new-example-variant .content-overlap {
+    display: grid;
+    /* Stacked Overlap */
+    grid-template-areas: "stack";
+    align-items: center;
+    justify-items: end;
+    position: relative;
+    margin-right: 4px;
+}
+
+.indicator-container.type-numeric-new.new-example-variant .view-all-label,
+.indicator-container.type-numeric-new.new-example-variant .numeric-label {
+    grid-area: stack;
+}
+
+/* Default State: View All Visible, Number Hidden */
+.indicator-container.type-numeric-new.new-example-variant .numeric-label {
+    opacity: 0;
+    max-width: 0;
+}
+
+.indicator-container.type-numeric-new.new-example-variant .view-all-label {
+    opacity: 1;
+    max-width: 100px;
+}
+
+/* Animated State: Swap (Number Shows, View All Hides) */
+.indicator-container.type-numeric-new.new-example-variant.is-animated .numeric-label {
+    opacity: 1;
+    max-width: 100px;
+}
+
+.indicator-container.type-numeric-new.new-example-variant.is-animated .view-all-label {
+    opacity: 0;
+    max-width: 0;
+}
+
+/* Hover State: Restore View All */
+.indicator-container.type-numeric-new.new-example-variant:hover .numeric-label {
+    opacity: 0 !important;
+    max-width: 0 !important;
+}
+
+.indicator-container.type-numeric-new.new-example-variant:hover .view-all-label {
+    opacity: 1 !important;
+    max-width: 100px !important;
+}
+
+/* New Example Variant - positioned flush to bottom-right corner */
+.indicator-container.type-numeric-new.new-example-variant {
+    right: 0;
+    bottom: 0;
+    border-radius: 8px 0 0 0;
+}
+
+/* Specific radius for banner to match parent container */
+.banner-card .indicator-container.type-numeric-new.new-example-variant {
+    border-radius: 8px 0 12px 0;
+}
+
+
 
 /* Card Close Button */
 .card-close-btn {
@@ -1435,6 +1722,21 @@ code {
     width: 100%;
     max-width: 1200px;
     /* Expanded for 4 columns */
+}
+
+/* Make category groups span all columns but form an identical sub-grid */
+.indicator-grid .category-header-group {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: start;
+    width: 100%;
+}
+
+.indicator-grid .category-header-group .category-title {
+    grid-column: 1 / -1;
+    margin-bottom: 0px; /* Adjusting margin since gap handles vertical spacing */
 }
 
 .product-card-v2 {
@@ -1554,6 +1856,7 @@ code {
     display: block;
     width: 14px;
     height: 14px;
+    object-fit: contain;
 }
 
 .mini-stepper .count {
@@ -1568,3 +1871,451 @@ code {
     font-weight: 800;
     color: #181a1c;
 }
+
+/* Banner Card Styles */
+.product-card-v2.banner-card {
+    grid-column: span 2;
+    min-width: 343px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.banner-card .product-visual {
+    width: 343px;
+    aspect-ratio: 343 / 114;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.banner-card .panning-strip {
+    width: 500%;
+}
+
+.banner-card .panning-strip img {
+    width: 20%;
+}
+
+.banner-card .product-details {
+    padding: 12px 0;
+    background: transparent;
+}
+
+.banner-title-outside {
+    font-size: 14px;
+    font-weight: 600;
+    color: #181a1c;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* ========================================================= */
+/* DIALOG / ALERT COMPONENT STYLES                           */
+/* ========================================================= */
+
+.playground-flex {
+    display: flex;
+    gap: 32px;
+}
+
+.variant-tabs {
+    display: flex;
+    gap: 4px;
+    background: #f3f5f7;
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    width: fit-content;
+    border: 1px solid #e0e0e0;
+}
+
+.variant-tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.variant-tab:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.variant-tab.active {
+    background: #fff;
+    border-color: #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.preview-phone {
+    width: 390px;
+    height: 844px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 32px;
+    box-shadow: 0 0 0 10px #181a1c;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: #fff;
+}
+
+.preview-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.dialog-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.dialog-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.334s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dialog-layer.open .dialog-scrim {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dialog-container {
+    background: transparent;
+    width: 100%;
+    max-width: 300px;
+    max-height: 568px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.96);
+    /* Base exit motion applied when .open is removed but not explicitly .closing */
+    transition: all 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dialog-layer.open .dialog-container {
+    pointer-events: auto;
+}
+
+.dialog-layer.closing .dialog-container {
+    transition: all 0.251s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    transform: scale(0.96) !important;
+    opacity: 0 !important;
+}
+
+.dialog-shell {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    border-radius: 20px;
+    transform-origin: bottom;
+}
+
+.dialog-content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+}
+
+.dialog-top {
+    padding: 0 20px 90px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-header-area {
+    padding: 20px 0;
+}
+
+.dialog-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #181a1c;
+    letter-spacing: -0.0234px;
+    line-height: 22px;
+}
+
+.dialog-body-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 8px;
+}
+
+.dialog-subtitle {
+    font-size: 14px;
+    color: rgba(24,26,28,0.56);
+    line-height: 21px;
+    letter-spacing: 0.035px;
+    width: 100%;
+}
+
+.dialog-divider {
+    height: 1px;
+    width: 260px;
+    background: rgba(24,26,28,0.06);
+}
+
+.dialog-price-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+    color: #181a1c;
+    line-height: 21px;
+    padding-bottom: 4px;
+}
+
+.dialog-price-row.total {
+    font-weight: 700;
+}
+
+#dialogTopE {
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 90px;
+}
+
+.dialog-image-area {
+    width: 120px;
+    height: 120px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.dialog-coupon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dialog-coupon-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #181a1c;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: -0.026px;
+}
+
+.dialog-coupon-title .highlight {
+    color: #4d1aff;
+}
+
+.dialog-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dialog-glass-surface {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.25) 100%);
+    z-index: -1;
+}
+
+.dialog-confirm-btn {
+    width: 100%;
+    height: 50px;
+    background: #000;
+    color: #fff;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-state-layer {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    transition: background 0.2s;
+    pointer-events: none;
+}
+
+.dialog-confirm-btn:hover .btn-state-layer {
+    background: rgba(255,255,255,0.1);
+}
+
+.dialog-confirm-btn:active {
+    transform: scale(0.97);
+}
+
+.dialog-confirm-btn:active .btn-state-layer {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Variant A */
+.dialog-container.variant-A {
+    transition: all 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.6);
+    opacity: 0;
+}
+.dialog-layer.open .dialog-container.variant-A {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Variant B */
+.dialog-container.variant-B {
+    transition: all 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.96);
+    opacity: 0;
+}
+.dialog-layer.open .dialog-container.variant-B {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Variant C */
+.dialog-container.variant-C {
+    transition: all 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateY(200px) scale(0.85, 0.001);
+    transform-origin: bottom;
+    opacity: 0;
+}
+.dialog-layer.open .dialog-container.variant-C {
+    transform: translateY(0) scale(1, 1);
+    opacity: 1;
+}
+.dialog-container.variant-C.pressed {
+    transform: scale(0.97);
+}
+/* Shell does not need independent scaleY if container handles it */
+.dialog-container.variant-C .dialog-shell {
+    transform: none;
+    transition: none;
+}
+.dialog-container.variant-C .dialog-content-wrapper {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.dialog-layer.open .dialog-container.variant-C .dialog-content-wrapper {
+    transition-delay: 0.334s;
+    opacity: 1;
+}
+
+/* Variant D, E, F base enter */
+/* Variant D, E base enter */
+.dialog-container.variant-D,
+.dialog-container.variant-E {
+    transition: all 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.96);
+    opacity: 0;
+}
+.dialog-layer.open .dialog-container.variant-D,
+.dialog-layer.open .dialog-container.variant-E {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Variant F: Container handles only opacity to prevent text distortion */
+.dialog-container.variant-F {
+    transform: none !important;
+    opacity: 0;
+    transition: opacity 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dialog-layer.open .dialog-container.variant-F {
+    opacity: 1;
+}
+.dialog-layer.closing .dialog-container.variant-F {
+    transform: none !important;
+    transition: opacity 0.251s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+/* Variant F Shell is the only element that scales */
+.dialog-container.variant-F .dialog-shell {
+    transform: scale(0.8);
+    transition: transform 0.334s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dialog-layer.open .dialog-container.variant-F .dialog-shell {
+    transform: scale(1);
+}
+.dialog-layer.closing .dialog-container.variant-F .dialog-shell {
+    transform: scale(0.96);
+    transition: transform 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Reveal Delays D, E, F */
+.dialog-container.variant-D .dialog-content-wrapper,
+.dialog-container.variant-E .dialog-content-wrapper {
+    opacity: 0;
+    transition: opacity 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dialog-layer.open .dialog-container.variant-D .dialog-content-wrapper,
+.dialog-layer.open .dialog-container.variant-E .dialog-content-wrapper {
+    transition-delay: 0.3s;
+    opacity: 1;
+}
+
+.dialog-container.variant-F .dialog-top {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.334s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dialog-layer.open .dialog-container.variant-F .dialog-top {
+    transition-delay: 0.1s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dialog-container.variant-F .dialog-bottom {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.334s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dialog-layer.open .dialog-container.variant-F .dialog-bottom {
+    transition-delay: 0.2s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dialog-specs-box {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.spec-group h4 { margin-bottom: 4px; font-size: 14px; font-weight: 600; color: #111; }
+.spec-group p { color: #666; margin-bottom: 2px; }
