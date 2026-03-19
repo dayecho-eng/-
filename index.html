@@ -44,7 +44,15 @@
                 <div class="token-display">
                     <div class="token-row">
                         <span>Web Duration</span>
-                        <code id="val-web-dur">0.3s</code>
+                        <code id="val-web-dur">0.334s</code>
+                    </div>
+                    <div class="token-row">
+                        <span>iOS Spec</span>
+                        <code id="val-ios">334ms / 0</code>
+                    </div>
+                    <div class="token-row">
+                        <span>Android Spec</span>
+                        <code id="val-android">Stiff: 384</code>
                     </div>
                 </div>
             </div>
@@ -109,7 +117,6 @@
 
             <!-- Sheet View -->
             <div id="view-sheet" class="component-view">
-                <!-- Code content omited for brevity in this tool call context, but normally I'd keep it all -->
                 <div class="code-viewer">
                     <div class="tabs">
                         <button class="tab active" data-target="web">Web (CSS)</button>
@@ -117,7 +124,13 @@
                         <button class="tab" data-target="compose">Jetpack Compose</button>
                     </div>
                     <div class="code-content active" id="code-web">
-                        <pre><code class="language-css">.sheet-container { --sheet-radius: 20px; ... }</code></pre>
+                        <pre><code class="language-css">/* 모션 토큰을 선택하면 코드가 표시됩니다 */</code></pre>
+                    </div>
+                    <div class="code-content" id="code-swift">
+                        <pre><code class="language-swift">// 모션 토큰을 선택하면 코드가 표시됩니다</code></pre>
+                    </div>
+                    <div class="code-content" id="code-compose">
+                        <pre><code class="language-kotlin">// 모션 토큰을 선택하면 코드가 표시됩니다</code></pre>
                     </div>
                 </div>
             </div>

@@ -45,51 +45,83 @@ let currentMotion = { type: 'Smooth', speed: 'Default' };
 
 function updateTokens(type, speed) {
     const data = tokens.Motion[type][speed];
+    if (!data) return;
 
     // Update CSS variables
     root.style.setProperty('--motion-duration', data.Web.duration);
     root.style.setProperty('--motion-easing', data.Web.easing);
 
     // Update Spec Labels
-    valWebDur.textContent = `${data.Web.duration}`;
-    valIOS.textContent = `${data.iOS}`;
-    valAndroid.textContent = `${data.Android}`;
+    if (valWebDur) valWebDur.textContent = `${data.Web.duration}`;
+    if (valIOS) valIOS.textContent = `${data.iOS}`;
+    if (valAndroid) valAndroid.textContent = `${data.Android}`;
 
     // Update Code Snippets
     updateCodeSnippets(type, speed, data);
 }
 
+// Initial Call
+updateTokens('Smooth', 'Default');
+
 function updateCodeSnippets(type, speed, data) {
-    const variantName = `${type} ${speed}`;
+    const variantName = `Motion.${type}.${speed}`;
 
-    // Web
-    codeWeb.textContent = `/* Web Implementation */
-.sheet-container {
-  /* Token: Motion.${type}.${speed} */
-  transition: transform ${data.Web.duration} ${data.Web.easing};
+    // Web Implementation
+    if (codeWeb) {
+        codeWeb.textContent = `/* CSS Variable Strategy */
+:root {
+  --sheet-motion-duration: ${data.Web.duration};
+  --sheet-motion-easing: ${data.Web.easing};
+}
+
+.sheet-surface {
+  /* Using Design Token: ${variantName} */
+  transition: transform var(--sheet-motion-duration) var(--sheet-motion-easing);
+  will-change: transform;
 }`;
+    }
 
-    // Swift
-    codeSwift.textContent = `// SwiftUI Implementation
-struct SheetView: View {
-    // Token: Motion.${type}.${speed}
-    // iOS: ${data.iOS}
-    var animation: Animation {
-        .interpolatingSpring(stiffness: ${data.Android.split(':')[1]}, damping: 30) // Approximation
+    // SwiftUI Implementation
+    if (codeSwift) {
+        codeSwift.textContent = `// SwiftUI Animation Spec
+// Using Design Token: ${variantName}
+// iOS Spec: ${data.iOS}
+
+extension Animation {
+    static let sheetSpring = Animation.interpolatingSpring(
+        duration: ${data.Web.duration.replace('s', '')},
+        bounce: ${type === 'Bouncy' ? '0.3' : (type === 'Snappy' ? '0.15' : '0')}
+    )
+}
+
+// Usage Example
+struct SheetContainer: View {
+    @State private var isPresented = false
+    
+    var body: some View {
+        VStack { ... }
+            .animation(.sheetSpring, value: isPresented)
     }
 }`;
+    }
 
-    // Compose
-    codeCompose.textContent = `// Jetpack Compose Implementation
-@Composable
-fun Sheet() {
-    // Token: Motion.${type}.${speed}
-    // Android: ${data.Android}
-    val animationSpec = spring(
-        dampingRatio = ${type === 'Bouncy' ? '0.7f' : '0.9f'},
-        stiffness = ${data.Android.match(/\d+/) ? data.Android.match(/\d+/)[0] + 'f' : 'Spring.StiffnessMedium'}
-    )
-}`;
+    // Jetpack Compose Implementation
+    if (codeCompose) {
+        codeCompose.textContent = `// Jetpack Compose Animation Spec
+// Using Design Token: ${variantName}
+// Android Spec: ${data.Android}
+
+val SheetSpringSpec = spring<Float>(
+    dampingRatio = ${type === 'Bouncy' ? '0.7f' : (type === 'Snappy' ? '0.9f' : 'Spring.DampingRatioNoBouncy')},
+    stiffness = ${data.Android.match(/\d+/) ? data.Android.match(/\d+/)[0] + 'f' : 'Spring.StiffnessMedium'}
+)
+
+// Usage Example
+val offset by animateFloatAsState(
+    targetValue = if (isExpanded) 0f else collapsedViewHeight,
+    animationSpec = SheetSpringSpec
+)`;
+    }
 }
 
 // State Machine
