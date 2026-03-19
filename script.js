@@ -2,25 +2,60 @@
 // Import tokens (simulated here since we can't fetch local files easily in vanilla JS without a server, 
 // I will embed the data structure for the demo logic)
 // In a real build, this would import 'tokens.json'
+// --- New Motion Spec (Spring) ---
+const BOUNCE = {
+    SMOOTH: 0,
+    SNAPPY: 0.15,
+    BOUNCY: 0.3
+};
+
+const DURATION = {
+    FASTEST: 0.167,
+    FAST: 0.251,
+    DEFAULT: 0.334,
+    SLOW: 0.668
+};
+
+const SPRING = {
+    FASTEST_SMOOTH: { type: 'spring', duration: DURATION.FASTEST, bounce: BOUNCE.SMOOTH },
+    FAST_SMOOTH: { type: 'spring', duration: DURATION.FAST, bounce: BOUNCE.SMOOTH },
+    DEFAULT_SMOOTH: { type: 'spring', duration: DURATION.DEFAULT, bounce: BOUNCE.SMOOTH },
+    SLOW_SMOOTH: { type: 'spring', duration: DURATION.SLOW, bounce: BOUNCE.SMOOTH },
+    FASTEST_SNAPPY: { type: 'spring', duration: DURATION.FASTEST, bounce: BOUNCE.SNAPPY },
+    FAST_SNAPPY: { type: 'spring', duration: DURATION.FAST, bounce: BOUNCE.SNAPPY },
+    DEFAULT_SNAPPY: { type: 'spring', duration: DURATION.DEFAULT, bounce: BOUNCE.SNAPPY },
+    SLOW_SNAPPY: { type: 'spring', duration: DURATION.SLOW, bounce: BOUNCE.SNAPPY },
+    FASTEST_BOUNCY: { type: 'spring', duration: DURATION.FASTEST, bounce: BOUNCE.BOUNCY },
+    FAST_BOUNCY: { type: 'spring', duration: DURATION.FAST, bounce: BOUNCE.BOUNCY },
+    DEFAULT_BOUNCY: { type: 'spring', duration: DURATION.DEFAULT, bounce: BOUNCE.BOUNCY },
+    SLOW_BOUNCY: { type: 'spring', duration: DURATION.SLOW, bounce: BOUNCE.BOUNCY },
+};
+
+// State mapping for existing UI
 const tokens = {
     Motion: {
         Smooth: {
-            Fastest: { Web: { duration: "0.25s", easing: "linear" /* approximated for demo */ }, iOS: "167ms / 0", Android: "Stiff: 1455" },
-            Fast: { Web: { duration: "0.25s", easing: "linear" }, iOS: "255ms / 0", Android: "Stiff: 627" },
-            Default: { Web: { duration: "0.334s", easing: "linear" }, iOS: "334ms / 0", Android: "Stiff: 384" }
+            Fastest: { Web: SPRING.FASTEST_SMOOTH, iOS: "167ms / 0", Android: "Stiff: 1455" },
+            Fast: { Web: SPRING.FAST_SMOOTH, iOS: "251ms / 0", Android: "Stiff: 627" },
+            Default: { Web: SPRING.DEFAULT_SMOOTH, iOS: "334ms / 0", Android: "Stiff: 384" },
+            Slow: { Web: SPRING.SLOW_SMOOTH, iOS: "668ms / 0", Android: "Stiff: 100" }
         },
         Snappy: {
-            Fastest: { Web: { duration: "0.25s", easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }, iOS: "167ms / 0.15", Android: "Stiff: 1455, Dump: 0.9" },
-            Fast: { Web: { duration: "0.25s", easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }, iOS: "255ms / 0.15", Android: "Stiff: 627, Dump: 0.9" },
-            Default: { Web: { duration: "0.334s", easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }, iOS: "334ms / 0.15", Android: "Stiff: 384, Dump: 0.9" }
+            Fastest: { Web: SPRING.FASTEST_SNAPPY, iOS: "167ms / 0.15", Android: "Stiff: 1455, Dump: 0.9" },
+            Fast: { Web: SPRING.FAST_SNAPPY, iOS: "251ms / 0.15", Android: "Stiff: 627, Dump: 0.9" },
+            Default: { Web: SPRING.DEFAULT_SNAPPY, iOS: "334ms / 0.15", Android: "Stiff: 384, Dump: 0.9" },
+            Slow: { Web: SPRING.SLOW_SNAPPY, iOS: "668ms / 0.15", Android: "Stiff: 100, Dump: 0.9" }
         },
         Bouncy: {
-            Fastest: { Web: { duration: "0.25s", easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)" }, iOS: "167ms / 0.3", Android: "Stiff: 1455, Dump: 0.7" },
-            Fast: { Web: { duration: "0.25s", easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)" }, iOS: "255ms / 0.3", Android: "Stiff: 627, Dump: 0.7" },
-            Default: { Web: { duration: "0.334s", easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)" }, iOS: "334ms / 0.3", Android: "Stiff: 384, Dump: 0.7" }
+            Fastest: { Web: SPRING.FASTEST_BOUNCY, iOS: "167ms / 0.3", Android: "Stiff: 1455, Dump: 0.7" },
+            Fast: { Web: SPRING.FAST_BOUNCY, iOS: "251ms / 0.3", Android: "Stiff: 627, Dump: 0.7" },
+            Default: { Web: SPRING.DEFAULT_BOUNCY, iOS: "334ms / 0.3", Android: "Stiff: 384, Dump: 0.7" },
+            Slow: { Web: SPRING.SLOW_BOUNCY, iOS: "668ms / 0.3", Android: "Stiff: 100, Dump: 0.7" }
         }
     }
 };
+
+const { animate } = Motion; // Destructure Motion library
 
 const sheetOverlay = document.getElementById('sheetOverlay');
 const sheetSurface = document.getElementById('sheetSurface');
@@ -48,17 +83,31 @@ function updateTokens(type, speed) {
     const data = tokens.Motion[type][speed];
     if (!data) return;
 
-    // Update CSS variables
-    root.style.setProperty('--motion-duration', data.Web.duration);
-    root.style.setProperty('--motion-easing', data.Web.easing);
+    // Update CSS variables for fallbacks or simple bits
+    root.style.setProperty('--motion-duration', `${data.Web.duration}s`);
+    // Note: Easing doesn't apply to pure spring, but we keep it for CSS fallbacks
+    root.style.setProperty('--motion-easing', 'cubic-bezier(0.2, 0.8, 0.2, 1)'); 
 
     // Update Spec Labels
-    if (valWebDur) valWebDur.textContent = `${data.Web.duration}`;
+    if (valWebDur) valWebDur.textContent = `${data.Web.duration}s`;
     if (valIOS) valIOS.textContent = `${data.iOS}`;
     if (valAndroid) valAndroid.textContent = `${data.Android}`;
 
     // Update Code Snippets
     updateCodeSnippets(type, speed, data);
+}
+
+function getSpring() {
+    return tokens.Motion[currentMotion.type][currentMotion.speed].Web;
+}
+
+function getMotionSpec() {
+    const data = tokens.Motion[currentMotion.type][currentMotion.speed];
+    return {
+        type: 'spring',
+        duration: data.Web.duration,
+        bounce: data.Web.bounce
+    };
 }
 
 // Initial Call
@@ -69,40 +118,27 @@ function updateCodeSnippets(type, speed, data) {
 
     // Web Implementation
     if (codeWeb) {
-        codeWeb.textContent = `/* CSS Variable Strategy */
-:root {
-  --sheet-motion-duration: ${data.Web.duration};
-  --sheet-motion-easing: ${data.Web.easing};
-}
+        codeWeb.textContent = `// Motion One (motion.dev) Implementation
+const SPRING = {
+  type: 'spring',
+  duration: ${data.Web.duration},
+  bounce: ${data.Web.bounce}
+};
 
-.sheet-surface {
-  /* Using Design Token: ${variantName} */
-  transition: transform var(--sheet-motion-duration) var(--sheet-motion-easing);
-  will-change: transform;
-}`;
+// Usage Example
+animate("#element", { y: [100, 0] }, SPRING);`;
     }
 
     // SwiftUI Implementation
     if (codeSwift) {
         codeSwift.textContent = `// SwiftUI Animation Spec
 // Using Design Token: ${variantName}
-// iOS Spec: ${data.iOS}
 
 extension Animation {
-    static let sheetSpring = Animation.interpolatingSpring(
-        duration: ${data.Web.duration.replace('s', '')},
-        bounce: ${type === 'Bouncy' ? '0.3' : (type === 'Snappy' ? '0.15' : '0')}
+    static let dsSpring = Animation.spring(
+        duration: ${data.Web.duration},
+        bounce: ${data.Web.bounce}
     )
-}
-
-// Usage Example
-struct SheetContainer: View {
-    @State private var isPresented = false
-    
-    var body: some View {
-        VStack { ... }
-            .animation(.sheetSpring, value: isPresented)
-    }
 }`;
     }
 
@@ -110,17 +146,10 @@ struct SheetContainer: View {
     if (codeCompose) {
         codeCompose.textContent = `// Jetpack Compose Animation Spec
 // Using Design Token: ${variantName}
-// Android Spec: ${data.Android}
 
-val SheetSpringSpec = spring<Float>(
-    dampingRatio = ${type === 'Bouncy' ? '0.7f' : (type === 'Snappy' ? '0.9f' : 'Spring.DampingRatioNoBouncy')},
-    stiffness = ${data.Android.match(/\d+/) ? data.Android.match(/\d+/)[0] + 'f' : 'Spring.StiffnessMedium'}
-)
-
-// Usage Example
-val offset by animateFloatAsState(
-    targetValue = if (isExpanded) 0f else collapsedViewHeight,
-    animationSpec = SheetSpringSpec
+val DSSpringSpec = spring<Float>(
+    dampingRatio = ${data.Web.bounce === 0.3 ? '0.7f' : (data.Web.bounce === 0.15 ? '0.85f' : 'Spring.DampingRatioNoBouncy')},
+    stiffness = ${data.Web.visualDuration === 0.167 ? '1500f' : (data.Web.visualDuration === 0.334 ? '384f' : '100f')}
 )`;
     }
 }
@@ -139,14 +168,28 @@ openBtn.addEventListener('click', () => {
     sheetSurface.classList.remove('expanded');
     sheetSurface.classList.add('collapsed');
     currentState = STATE.COLLAPSED;
-    sheetSurface.style.transform = '';
+    
+    const collapsedY = (window.innerHeight - 58) * 0.5;
+    animate(sheetSurface, { y: [window.innerHeight, collapsedY], opacity: 1 }, getSpring());
+    animate(sheetFooter, { y: [100, 0] }, getSpring()); // ENTER FOOTER
+    animate(sheetOverlay.querySelector('.sheet-backdrop'), { opacity: [0, 1] }, { duration: 0.3 });
 });
 
 function closeSheet() {
-    sheetOverlay.classList.remove('open');
-    sheetSurface.classList.remove('collapsed', 'expanded');
-    currentState = STATE.CLOSED;
-    sheetSurface.style.transform = '';
+    animate(sheetSurface, { y: window.innerHeight, opacity: 0 }, getSpring()).then(() => {
+        sheetOverlay.classList.remove('open');
+        sheetSurface.classList.remove('collapsed', 'expanded');
+        currentState = STATE.CLOSED;
+        sheetSurface.style.transform = '';
+        sheetFooter.style.transform = '';
+    });
+    animate(sheetFooter, { y: 100 }, getSpring()); // EXIT FOOTER
+    animate(sheetOverlay.querySelector('.sheet-backdrop'), { opacity: 0 }, { duration: 0.3 });
+
+    // Reset scroll position
+    setTimeout(() => {
+        if (sheetBody) sheetBody.scrollTop = 0;
+    }, 500); 
 }
 
 [closeBtn, footerConfirmBtn].forEach(btn => {
@@ -193,7 +236,7 @@ function moveDrag(y, event) {
         if (currentY < 0) currentY *= 0.2;
 
         if (event.cancelable) event.preventDefault();
-        sheetSurface.style.transform = `translateY(${currentY}px)`;
+        animate(sheetSurface, { y: currentY }, { duration: 0 });
     } else {
         // In expanded state: Seamless Scroll -> Resize logic
         if (event.cancelable) event.preventDefault();
@@ -209,7 +252,7 @@ function moveDrag(y, event) {
             } else {
                 // We've hit the top, start dragging the sheet down
                 currentY = -potentialScroll; // The remainder of the drag
-                sheetSurface.style.transform = `translateY(${currentY}px)`;
+                animate(sheetSurface, { y: currentY }, { duration: 0 });
             }
         }
         // If we are dragging UP (deltaY < 0)
@@ -217,12 +260,12 @@ function moveDrag(y, event) {
             if (currentY > 0) {
                 // Pulling the sheet back up to expanded position
                 currentY = Math.max(0, initialTranslateY + deltaY);
-                sheetSurface.style.transform = `translateY(${currentY}px)`;
+                animate(sheetSurface, { y: currentY }, { duration: 0 });
             } else {
                 // Sheet is at top, start scrolling content
                 sheetBody.scrollTop = initialScrollTop - deltaY;
                 currentY = 0;
-                sheetSurface.style.transform = `translateY(0)`;
+                animate(sheetSurface, { y: 0 }, { duration: 0 });
             }
         }
     }
@@ -231,29 +274,33 @@ function moveDrag(y, event) {
 function endDrag() {
     if (!isDragging) return;
     isDragging = false;
-    sheetSurface.style.transition = '';
-
+    
     const collapsedY = (window.innerHeight - 58) * 0.5;
     const threshold = 100;
 
     if (currentState === STATE.COLLAPSED) {
         if (currentY < collapsedY - threshold) {
+            // Snap to Expanded
+            animate(sheetSurface, { y: 0 }, getSpring());
             sheetSurface.classList.replace('collapsed', 'expanded');
             currentState = STATE.EXPANDED;
-            sheetSurface.style.transform = '';
         } else if (currentY > collapsedY + threshold) {
+            // Close
             closeSheet();
         } else {
-            sheetSurface.style.transform = '';
+            // Return to Collapsed
+            animate(sheetSurface, { y: collapsedY }, getSpring());
         }
     } else {
         // From Expanded state
         if (currentY > threshold) {
+            // Snap to Collapsed
+            animate(sheetSurface, { y: collapsedY }, getSpring());
             sheetSurface.classList.replace('expanded', 'collapsed');
             currentState = STATE.COLLAPSED;
-            sheetSurface.style.transform = '';
         } else {
-            sheetSurface.style.transform = '';
+            // Return to Expanded
+            animate(sheetSurface, { y: 0 }, getSpring());
         }
     }
     currentY = 0;
@@ -416,6 +463,33 @@ function switchView(targetView, subCategory = null) {
         }
     });
 
+    // Toggle Motion Controls Disability
+    const typeSelector = document.getElementById('typeSelector');
+    const speedSelector = document.getElementById('speedSelector');
+    const specsArea = document.querySelector('.specs');
+    
+    if (targetView === 'dialog-alert') {
+        typeSelector?.classList.add('disabled');
+        speedSelector?.classList.add('disabled');
+        specsArea?.classList.add('disabled');
+    } else {
+        typeSelector?.classList.remove('disabled');
+        speedSelector?.classList.remove('disabled');
+        specsArea?.classList.remove('disabled');
+    }
+
+    // Toggle Main Actions Group Visibility
+    const mainActionsGroup = document.getElementById('mainActionsGroup');
+    if (mainActionsGroup) {
+        const activeAction = views[targetView].actions;
+        const hasButtons = activeAction.querySelector('button') !== null;
+        if (hasButtons) {
+            mainActionsGroup.classList.remove('hidden');
+        } else {
+            mainActionsGroup.classList.add('hidden');
+        }
+    }
+
     // Handle Page Indicator filtering and animations
     if (targetView === 'page-indicator') {
         filterPageIndicators(subCategory);
@@ -462,12 +536,54 @@ function initSteppers() {
 
         let count = container.classList.contains('active') ? parseInt(countSpan.textContent) : 0;
 
-        const updateUI = () => {
+        const updateUI = (isEntering = false) => {
+            const spec = getSpring();
             countSpan.textContent = count;
+            
+            const is160 = container.closest('.product-card').classList.contains('size-160');
+            const isBorder = container.closest('.product-card').classList.contains('border-variant');
+            
             if (count > 0) {
-                container.classList.add('active');
+                if (!container.classList.contains('active')) {
+                    const targetWidth = is160 ? 140 : 95;
+                    // Provide explicit start for the spring to track correctly
+                    animate(container, { width: ['38px', `${targetWidth}px`] }, spec);
+                    container.classList.add('active');
+                    
+                    const btnActivePos = isBorder ? 5 : 6;
+                    animate(initialBtn, { 
+                        width: ['38px', '26px'], 
+                        height: ['38px', '26px'], 
+                        top: [isBorder ? '-1px' : '0px', `${btnActivePos}px`], 
+                        right: [isBorder ? '-1px' : '0px', `${btnActivePos}px`],
+                        backgroundSize: ['24px 24px', '18px 18px'],
+                        opacity: [1, 1],
+                        scale: [1, 1]
+                    }, spec);
+                    
+                    animate(minusBtn, { opacity: [0, 1], scale: [0.8, 1] }, spec);
+                    animate(countSpan, { opacity: [0, 1], scale: [0.8, 1] }, spec);
+                }
             } else {
-                container.classList.remove('active');
+                if (container.classList.contains('active')) {
+                    const targetWidth = is160 ? 140 : 95;
+                    animate(container, { width: [`${targetWidth}px`, '38px'] }, spec);
+                    container.classList.remove('active');
+                    
+                    const btnInactivePos = isBorder ? -1 : 0;
+                    animate(initialBtn, { 
+                        width: ['26px', '38px'], 
+                        height: ['26px', '38px'], 
+                        top: [`${isBorder ? 5 : 6}px`, `${btnInactivePos}px`], 
+                        right: [`${isBorder ? 5 : 6}px`, `${btnInactivePos}px`],
+                        backgroundSize: ['18px 18px', '24px 24px'],
+                        opacity: [1, 1],
+                        scale: [1, 1]
+                    }, spec);
+                    
+                    animate(minusBtn, { opacity: 0, scale: 0.8 }, spec);
+                    animate(countSpan, { opacity: 0, scale: 0.8 }, spec);
+                }
             }
         };
 
@@ -557,16 +673,21 @@ function initPageIndicators() {
                 }
 
                 const offset = localVisualIndex * stepWidthPercent;
-                strip.style.transform = `translateX(-${offset}%)`;
-
-                if (localVisualIndex === cardSteps && nextIndex % cardSteps === 0) {
-                    setTimeout(() => {
-                        strip.style.transition = 'none';
-                        strip.style.transform = `translateX(0%)`;
-                        strip.offsetHeight;
-                        strip.style.transition = '';
-                        isLooping = false; // Missing reset added here!
-                    }, 350);
+                
+                if (card.dataset.type === 'sliding-bar') {
+                    // Instant swap for sliding bar
+                    animate(strip, { x: `-${offset}%` }, { duration: 0 });
+                } else {
+                    // Spring snap for others
+                    const snapAnim = animate(strip, { x: `-${offset}%` }, getSpring());
+                    
+                    // Seamless loop: if we just animated to the clone, jump back to real index 0
+                    if (localVisualIndex === cardSteps && nextIndex % cardSteps === 0) {
+                        snapAnim.then(() => {
+                            animate(strip, { x: '0%' }, { duration: 0 });
+                            isLooping = false;
+                        });
+                    }
                 }
             }
 
@@ -632,26 +753,59 @@ function initPageIndicators() {
     let dragStartX = 0;
     let isDraggingIndicator = false;
     let wasAutoPlayActiveBeforeDrag = true;
+    let dragContainerWidth = 0;
 
-    function handleStart(x) {
+    function handleStart(x, area) {
         dragStartX = x;
         isDraggingIndicator = true;
+        dragContainerWidth = area.offsetWidth;
         wasAutoPlayActiveBeforeDrag = autoPlayActive;
         if (autoPlayActive) {
             toggleAutoPlay(false, true); // Silent pause
         }
+
+        // Stop any active animations and disable transitions
+        document.querySelectorAll('.panning-strip').forEach(s => {
+            s.style.transition = 'none';
+            // We set transform directly now
+        });
+    }
+
+    function handleMove(x) {
+        if (!isDraggingIndicator) return;
+        const deltaX = x - dragStartX;
+        
+        document.querySelectorAll('.panning-strip').forEach(strip => {
+            const imgCount = strip.querySelectorAll('img').length;
+            const stepWidthPercentOfStrip = 100 / imgCount;
+            const currentOffset = -currentIndex * stepWidthPercentOfStrip + (deltaX / dragContainerWidth) * stepWidthPercentOfStrip;
+            
+            // USE animate with duration 0 to "drive" the property without competition
+            animate(strip, { x: `${currentOffset}%` }, { duration: 0 });
+        });
     }
 
     function handleEnd(x) {
         if (!isDraggingIndicator) return;
         const deltaX = x - dragStartX;
-        const threshold = 50;
+        const threshold = dragContainerWidth * 0.2; // 20% of width to trigger change
 
+        // Re-enable transitions for non-animated types, but for panning-strip we primarily use animate()
+        document.querySelectorAll('.panning-strip').forEach(s => {
+            // No need to set transition back if we use animate() for the snap
+            s.style.transition = 'none'; 
+        });
+
+        let nextIndex = currentIndex;
         if (deltaX > threshold) {
-            updateIndicators(currentIndex > 0 ? currentIndex - 1 : totalSteps - 1);
+            // Swipe Right -> Prev
+            nextIndex = (currentIndex > 0) ? currentIndex - 1 : totalSteps - 1;
         } else if (deltaX < -threshold) {
-            updateIndicators((currentIndex + 1) % totalSteps);
+            // Swipe Left -> Next
+            nextIndex = (currentIndex + 1) % totalSteps;
         }
+
+        updateIndicators(nextIndex);
 
         isDraggingIndicator = false;
         if (wasAutoPlayActiveBeforeDrag) {
@@ -659,10 +813,14 @@ function initPageIndicators() {
         }
     }
 
+    window.addEventListener('mousemove', (e) => handleMove(e.clientX));
+    window.addEventListener('mouseup', (e) => handleEnd(e.clientX));
+
     visualAreas.forEach(area => {
-        area.addEventListener('mousedown', (e) => handleStart(e.clientX));
-        window.addEventListener('mouseup', (e) => handleEnd(e.clientX));
-        area.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX), { passive: true });
+        area.addEventListener('mousedown', (e) => handleStart(e.clientX, area));
+        
+        area.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, area), { passive: true });
+        area.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX), { passive: true });
         area.addEventListener('touchend', (e) => handleEnd(e.changedTouches[0].clientX), { passive: true });
     });
 
@@ -744,6 +902,16 @@ initPageIndicators();
 sheetSurface.addEventListener('dragstart', (e) => e.preventDefault());
 sheetSurface.addEventListener('selectstart', (e) => e.preventDefault());
 
+// --- Collapsible Specs Logic ---
+const specsToggle = document.getElementById('specsToggle');
+const specsCollapsible = document.getElementById('specsCollapsible');
+
+if (specsToggle && specsCollapsible) {
+    specsToggle.addEventListener('click', () => {
+        specsCollapsible.classList.toggle('expanded');
+    });
+}
+
 // Restore previous view after all initializations
 document.addEventListener('DOMContentLoaded', () => {
     const savedView = localStorage.getItem('activeView');
@@ -770,39 +938,55 @@ function initDialogAlert() {
     const variantData = {
         'A': {
             memo: '중앙 scale 등장<br>버튼 scale 피드백',
-            enter: 'FAST_BOUNCY (0.251s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.6 → 1',
+            enter: 'DEFAULT_BOUNCY<br>Opacity 0 → 1<br>Scale 0.6 → 1',
+            enterSpring: SPRING.DEFAULT_BOUNCY,
             reveal: null,
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Button)',
+            pressSpring: SPRING.FAST_SNAPPY
         },
         'B': {
             memo: '얌전 등장<br>버튼 scale 피드백',
-            enter: 'FAST_BOUNCY (0.251s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.96 → 1',
+            enter: 'FAST_BOUNCY<br>Opacity 0 → 1<br>Scale 0.96 → 1',
+            enterSpring: SPRING.FAST_BOUNCY,
             reveal: null,
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Button)',
+            pressSpring: SPRING.FAST_SNAPPY
         },
         'C': {
             memo: '아래쪽에서 펼쳐지면서 등장 (바텀시트처럼)<br>Dialog 전체가 눌리는 느낌 피드백',
-            enter: 'FAST_BOUNCY (0.251s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.85 → 1<br>Scale Y 0 → 1<br>Y 450 → 0',
-            reveal: 'Delay 0.334s<br>Duration 0.3s<br>Opacity 0 → 1',
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Dialog Container)'
+            enter: 'FAST_BOUNCY<br>Opacity 0 → 1<br>Scale 0.85 → 1<br>Scale Y 0 → 1<br>Y 450 → 0',
+            enterSpring: SPRING.FAST_BOUNCY,
+            reveal: 'Delay 334ms<br>Opacity 0 → 1',
+            revealSpring: SPRING.DEFAULT_SMOOTH,
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Dialog Container)',
+            pressSpring: SPRING.FAST_SNAPPY
         },
         'D': {
             memo: '얌전 등장<br>버튼 scale 피드백<br>컨텐츠가 늦게 나타남',
-            enter: 'FAST_BOUNCY (0.251s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.96 → 1',
-            reveal: 'Delay 0.3s<br>FAST_SNAPPY (0.251s, bounce 0.15)<br>Opacity 0 → 1',
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
+            enter: 'FAST_BOUNCY<br>Opacity 0 → 1<br>Scale 0.96 → 1',
+            enterSpring: SPRING.FAST_BOUNCY,
+            reveal: 'Delay 300ms<br>FAST_SNAPPY<br>Opacity 0 → 1',
+            revealSpring: SPRING.FAST_SNAPPY,
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Button)',
+            pressSpring: SPRING.FAST_SNAPPY
         },
         'E': {
             memo: '얌전 등장<br>버튼 scale 피드백<br>컨텐츠가 늦게 나타남',
-            enter: 'FAST_BOUNCY (0.251s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.96 → 1',
-            reveal: 'Delay 0.3s<br>FAST_SNAPPY (0.251s, bounce 0.15)<br>Opacity 0 → 1',
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
+            enter: 'FAST_BOUNCY<br>Opacity 0 → 1<br>Scale 0.96 → 1',
+            enterSpring: SPRING.FAST_BOUNCY,
+            reveal: 'Delay 300ms<br>FAST_SNAPPY<br>Opacity 0 → 1',
+            revealSpring: SPRING.FAST_SNAPPY,
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Button)',
+            pressSpring: SPRING.FAST_SNAPPY
         },
         'F': {
             memo: '얌전 등장<br>버튼 scale 피드백<br>컨텐츠가 늦게 나타남 (Y position 모션 포함)',
-            enter: 'DEFAULT_BOUNCY (0.334s, bounce 0.3)<br>Opacity 0 → 1<br>Scale 0.8 → 1',
-            reveal: 'Delay 0.1s<br>SLOW_SNAPPY (0.334s, bounce 0)<br>Opacity 0 → 1<br>Y 8 → 0',
-            press: 'FAST_BOUNCY<br>Scale 1 → 0.97 (Button)'
+            enter: 'DEFAULT_BOUNCY<br>Opacity 0 → 1<br>Scale 0.8 → 1',
+            enterSpring: SPRING.DEFAULT_BOUNCY,
+            reveal: 'Delay 100ms<br>SLOW_SNAPPY<br>Opacity 0 → 1<br>Y 8 → 0',
+            revealSpring: SPRING.SLOW_SNAPPY,
+            press: 'FAST_SNAPPY<br>Scale 1 → 0.97 (Button)',
+            pressSpring: SPRING.FAST_SNAPPY
         }
     };
 
@@ -825,7 +1009,8 @@ function initDialogAlert() {
             html += `<div class="spec-group"><h4>Content Reveal</h4><p style="white-space: pre-line;">${d.reveal}</p></div>`;
         }
 
-        html += `<div class="spec-group"><h4>Dialog Exit Motion</h4><p>FAST_SNAPPY (0.251s, bounce 0.15)<br>Opacity 1 → 0<br>Scale 1 → 0.96</p></div>`;
+        const exitScale = v === 'F' ? '0.90' : '0.96';
+        html += `<div class="spec-group"><h4>Dialog Exit Motion</h4><p>FAST_SNAPPY<br>Opacity 1 → 0<br>Scale 1 → ${exitScale}</p></div>`;
         html += `<div class="spec-group"><h4>Scrim Motion</h4><p>DEFAULT_BOUNCY<br>Opacity 0 → 1</p></div>`;
         
         dialogSpecsBox.innerHTML = html;
@@ -858,43 +1043,145 @@ function initDialogAlert() {
         });
     });
 
+    let isAnimatingDialog = false;
+
     dialogPreviewBox.addEventListener('click', (e) => {
+        // Prevent opening if clicking confirm or while already open/closing
+        if (e.target.closest('#dialogConfirmBtn') || isAnimatingDialog) return;
+        
         if (!dialogLayer.classList.contains('open')) {
+            isAnimatingDialog = true;
             dialogLayer.classList.add('open');
+            const d = variantData[currentVariant];
+            const enterSpec = d.enterSpring || SPRING.FAST_BOUNCY;
+            
+            const contentWrapper = document.getElementById('dialogContentWrapper');
+            
+            // INSTANTLY HIDE OR SHOW CONTENT TO PREVENT FLICKER
+            if (['C', 'D', 'E', 'F'].includes(currentVariant)) {
+                contentWrapper.style.opacity = '0';
+                contentWrapper.style.transform = 'translateY(8px)';
+            } else {
+                contentWrapper.style.opacity = '1';
+                contentWrapper.style.transform = 'none';
+            }
+
+            // INSTANTLY RESET CONTAINER TO PREVENT SECOND-OPEN FLICKER
+            if (currentVariant === 'C') {
+                dialogContainer.style.opacity = '0';
+                dialogContainer.style.transform = 'translateY(450px) scale(0.85) scaleY(0.1)';
+            } else if (currentVariant === 'A') {
+                dialogContainer.style.opacity = '0';
+                dialogContainer.style.transform = 'scale(0.6)';
+            } else {
+                dialogContainer.style.opacity = '0';
+                dialogContainer.style.transform = 'scale(0.96)';
+            }
+
+            // SPECIFIC ENTRY LOGIC - DO NOT TOUCH D, E, F (Keep their logic conceptually same but more stable)
+            if (currentVariant === 'C') {
+                // Combine animations to prevent transform property conflict
+                animate(dialogContainer, { 
+                    y: [450, 0], 
+                    scale: [0.85, 1], 
+                    scaleY: [0.1, 1],
+                    opacity: [0, 1] 
+                }, enterSpec);
+            } else if (currentVariant === 'A') {
+                animate(dialogContainer, { 
+                    scale: [0.6, 1], 
+                    opacity: [0, 1], 
+                    y: [0, 0], 
+                    scaleY: [1, 1] 
+                }, enterSpec);
+            } else if (currentVariant === 'B') {
+                animate(dialogContainer, { 
+                    scale: [0.96, 1], 
+                    opacity: [0, 1], 
+                    y: [0, 0], 
+                    scaleY: [1, 1] 
+                }, enterSpec);
+            } else if (currentVariant === 'F') {
+                animate(dialogContainer, { scale: [0.8, 1], opacity: [0, 1] }, enterSpec);
+            } else {
+                animate(dialogContainer, { scale: [0.96, 1], opacity: [0, 1] }, enterSpec);
+            }
+            
+            isAnimatingDialog = false; 
+
+            // Reveal Animation (C, D, E, F)
+            if (d.revealSpring) {
+                // Sync delay with entry duration to prevent 'lag' feeling
+                // enterSpec.duration for C is 0.251 (FAST_BOUNCY)
+                const delay = currentVariant === 'C' ? 251 : (currentVariant === 'F' ? 150 : 334); 
+                setTimeout(() => {
+                    animate(contentWrapper, { opacity: [0, 1], y: [8, 0] }, d.revealSpring);
+                }, delay);
+            }
+
+            animate(dialogScrim, { opacity: [0, 1] }, { duration: 0.3 });
         }
     });
 
+    const closeDialog = () => {
+        if (isAnimatingDialog || !dialogLayer.classList.contains('open')) return;
+        
+        isAnimatingDialog = true;
+        const spec = SPRING.FAST_SNAPPY; 
+        const exitScale = currentVariant === 'F' ? 0.90 : 0.96;
+        
+        animate(dialogContainer, { 
+            scale: exitScale, 
+            opacity: 0 
+        }, spec).then(() => {
+            dialogLayer.classList.remove('open');
+            // Full reset
+            animate(dialogContainer, { scale: 1, scaleY: 1, opacity: 0, y: 0 }, { duration: 0 });
+            const contentWrapper = document.getElementById('dialogContentWrapper');
+            animate(contentWrapper, { opacity: 1, y: 0 }, { duration: 0 }); 
+            isAnimatingDialog = false;
+        });
+        animate(dialogScrim, { opacity: 0 }, { duration: 0.2 });
+    };
+
     dialogScrim.addEventListener('click', (e) => {
         e.stopPropagation();
-        dialogLayer.classList.remove('open');
+        closeDialog();
     });
 
     dialogConfirmBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        dialogLayer.classList.remove('open');
+        closeDialog();
     });
 
-    // Variant C specific pressed state handling
-    dialogConfirmBtn.addEventListener('mousedown', () => {
-        if (currentVariant === 'C') {
-            dialogContainer.classList.add('pressed');
+    // Variant-specific pressed state handling
+    const handlePressStart = () => {
+        const d = variantData[currentVariant];
+        if (d && d.pressSpring) {
+            if (currentVariant === 'C') {
+                // Whole Dialog scales down
+                animate(dialogContainer, { scale: 0.97 }, d.pressSpring);
+            } else {
+                // ONLY the button scales down
+                animate(dialogConfirmBtn, { scale: 0.96 }, d.pressSpring);
+            }
         }
-    });
-    dialogConfirmBtn.addEventListener('touchstart', () => {
-        if (currentVariant === 'C') {
-            dialogContainer.classList.add('pressed');
+    };
+    const handlePressEnd = () => {
+        const d = variantData[currentVariant];
+        if (d && d.pressSpring) {
+            if (currentVariant === 'C') {
+                animate(dialogContainer, { scale: 1 }, d.pressSpring);
+            } else {
+                animate(dialogConfirmBtn, { scale: 1 }, d.pressSpring);
+            }
         }
-    });
-    window.addEventListener('mouseup', () => {
-        if (currentVariant === 'C') {
-            dialogContainer.classList.remove('pressed');
-        }
-    });
-    window.addEventListener('touchend', () => {
-        if (currentVariant === 'C') {
-            dialogContainer.classList.remove('pressed');
-        }
-    });
+    };
+
+    dialogConfirmBtn.addEventListener('mousedown', handlePressStart);
+    dialogConfirmBtn.addEventListener('touchstart', handlePressStart);
+    window.addEventListener('mouseup', handlePressEnd);
+    window.addEventListener('touchend', handlePressEnd);
 
     // Init
     setVariant('A');

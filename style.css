@@ -29,14 +29,15 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    /* Remove fixed height and overflow hidden to allow global scroll */
-    min-height: 100vh;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .handoff-container {
     display: flex;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
 }
 
 .controls {
@@ -50,9 +51,19 @@ body {
     flex-direction: column;
     gap: 24px;
     z-index: 10;
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.controls::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.controls {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 /* Category/Group Headers */
@@ -94,22 +105,26 @@ body {
     background: #f8f9fa;
     position: relative;
     padding: 60px 40px;
-    min-height: 100vh;
+    height: 100%;
+    overflow-y: auto;
 }
 
 /* Typography & UI */
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
 header h1 {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 .badge {
-    background: #e0f2fe;
-    color: #0284c7;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
+    display: none;
 }
 
 .control-panel label {
@@ -174,12 +189,27 @@ header h1 {
     padding-left: 28px;
 }
 
-/* Main Actions Section Separation */
-.main-actions-group {
+/* Floating Controls Box at bottom */
+.floating-controls {
+    position: sticky;
+    bottom: 0;
     margin-top: auto;
-    /* Push to bottom if space allows */
-    padding-top: 24px;
-    border-top: 2px solid #f3f5f7;
+    background: #fff;
+    padding: 24px;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-bottom: -24px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
+    z-index: 20;
+}
+
+.main-actions-group {
+    padding-top: 20px;
+    border-top: 1px solid #f3f5f7;
 }
 
 .main-actions-group label {
@@ -241,6 +271,37 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.selector-group.compact {
+    flex-direction: row;
+    gap: 4px;
+}
+
+.selector-group.disabled,
+.specs.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.selector-group.compact .selector-btn {
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    padding: 6px 4px;
+    gap: 2px;
+}
+
+.selector-group.compact .btn-label {
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.selector-group.compact .btn-info {
+    font-size: 10px;
 }
 
 .selector-btn {
@@ -336,22 +397,79 @@ select:focus {
     opacity: 0.9;
 }
 
-.specs {
-    background: #f8f9fa;
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 13px;
+.specs.collapsible {
+    padding: 0;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fafafa;
 }
+
+.specs-toggle {
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+}
+
+.specs-toggle .chevron {
+    transition: transform 0.3s ease;
+}
+
+.specs.expanded .specs-toggle .chevron {
+    transform: rotate(180deg);
+}
+
+.specs-content {
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+    padding: 0 16px;
+    opacity: 0;
+}
+
+.specs.expanded .specs-content {
+    max-height: 200px;
+    padding: 0 16px 16px 16px;
+    opacity: 1;
+}
+
+.token-display {
+    padding-top: 4px;
+}
+
 
 .token-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.token-row:last-child {
+    margin-bottom: 0;
+}
+
+.token-row span {
+    color: #666;
+    font-weight: 500;
 }
 
 .token-row code {
     font-family: 'JetBrains Mono', monospace;
-    color: #d63384;
+    color: #181a1c;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
 }
 
 /* Code Viewer */
@@ -444,19 +562,22 @@ code {
 }
 
 .sheet-surface {
-    position: absolute;
-    z-index: 100;
+    position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
     width: 100%;
-    /* Safety Zone: 58px */
-    height: calc(100vh - 58px);
-    background: #fff;
-    border-radius: 32px 32px 0 0;
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--sheet-bg);
+    border-radius: var(--sheet-radius) var(--sheet-radius) 0 0;
+    box-shadow: var(--sheet-shadow);
     transform: translateY(100%);
-    transition: transform var(--motion-duration) var(--motion-easing);
+    transition: none; /* Controlled by Motion.animate */
+    z-index: 1000;
     display: flex;
     flex-direction: column;
+    max-height: 96vh;
     overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
@@ -470,15 +591,7 @@ code {
     cursor: default;
 }
 
-.sheet-overlay.open .sheet-surface {
-    transform: translateY(0);
-}
-
-/* Snap Point States */
-.sheet-overlay.open .sheet-surface.collapsed {
-    /* 50% of the available sheet height: (100vh - 58px) * 0.5 */
-    transform: translateY(calc((100vh - 58px) * 0.5));
-}
+/* Snap Point States handled by JS */
 
 .sheet-surface.collapsed .sheet-body {
     overflow: hidden;
@@ -599,13 +712,11 @@ code {
     padding: 24px;
     background: transparent;
     transform: translateY(100%);
-    transition: transform var(--motion-duration) var(--motion-easing);
+    transition: none;
     display: block;
 }
 
-.sheet-overlay.open .sheet-footer {
-    transform: translateY(0) !important;
-}
+/* Footer position handled by JS */
 
 /* High-Fidelity Single-Layer Progressive Blur for Footer */
 .sheet-footer::before {
@@ -821,9 +932,7 @@ code {
     padding: 0 6px;
     /* 6px padding to align 26px buttons to ends */
     box-sizing: border-box;
-    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-        background 0.35s ease,
-        box-shadow 0.35s ease;
+    transition: none; /* Controlled by Motion.animate */
     overflow: hidden;
     z-index: 5;
 }
@@ -875,7 +984,7 @@ code {
     color: #111;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
+    transition: opacity var(--motion-duration) var(--motion-easing), background-color 0.2s ease;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -912,7 +1021,7 @@ code {
     font-weight: 600;
     color: #111;
     opacity: 0;
-    transition: opacity 0.2s ease 0.1s;
+    transition: opacity var(--motion-duration) var(--motion-easing);
 }
 
 .product-card.size-107 .step-count {
@@ -946,12 +1055,12 @@ code {
     background-position: center;
     background-size: 24px 24px;
     border-radius: 50%;
-    transition: background-size 0.2s ease,
-        background-color 0.2s ease,
-        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-size var(--motion-duration) var(--motion-easing),
+        background-color var(--motion-duration) var(--motion-easing),
+        width var(--motion-duration) var(--motion-easing),
+        height var(--motion-duration) var(--motion-easing),
+        top var(--motion-duration) var(--motion-easing),
+        right var(--motion-duration) var(--motion-easing);
 }
 
 .add-initial-btn:hover {
@@ -1705,7 +1814,7 @@ code {
 
 /* 4. Sliding Bar (Segmented) - Instant Image Change */
 .product-card-v2[data-type="sliding-bar"] .panning-strip {
-    transition: none;
+    transition: none !important;
     /* Instant image swap */
 }
 
@@ -2060,18 +2169,12 @@ code {
     pointer-events: none;
     opacity: 0;
     transform: scale(0.96);
-    /* Base exit motion applied when .open is removed but not explicitly .closing */
-    transition: all 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Removed CSS transitions to allow Motion.animate full control */
+    transition: none;
 }
 
 .dialog-layer.open .dialog-container {
     pointer-events: auto;
-}
-
-.dialog-layer.closing .dialog-container {
-    transition: all 0.251s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-    transform: scale(0.96) !important;
-    opacity: 0 !important;
 }
 
 .dialog-shell {
@@ -2296,56 +2399,7 @@ code {
     opacity: 1;
 }
 
-/* Variant F: Container handles only opacity to prevent text distortion */
-.dialog-container.variant-F {
-    transform: none !important;
-    opacity: 0;
-    transition: opacity 0.251s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.dialog-layer.open .dialog-container.variant-F {
-    opacity: 1;
-}
-.dialog-layer.closing .dialog-container.variant-F {
-    transform: none !important;
-    transition: opacity 0.251s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-}
-
-/* Variant F Shell is the only element that scales */
-.dialog-container.variant-F .dialog-shell {
-    transform: scale(0.8);
-    transition: transform 0.334s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.dialog-layer.open .dialog-container.variant-F .dialog-shell {
-    transform: scale(1);
-}
-.dialog-layer.closing .dialog-container.variant-F .dialog-shell {
-    transform: scale(0.96);
-    transition: transform 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Reveal Delays D, E, F */
-.dialog-container.variant-D .dialog-content-wrapper,
-.dialog-container.variant-E .dialog-content-wrapper {
-    opacity: 0;
-    transition: opacity 0.251s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.dialog-layer.open .dialog-container.variant-D .dialog-content-wrapper,
-.dialog-layer.open .dialog-container.variant-E .dialog-content-wrapper {
-    transition-delay: 0.3s;
-    opacity: 1;
-}
-
-/* Variant F: unified content reveal (no top/bottom split) */
-.dialog-container.variant-F .dialog-content-wrapper {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.334s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.dialog-layer.open .dialog-container.variant-F .dialog-content-wrapper {
-    transition-delay: 0.1s;
-    opacity: 1;
-    transform: translateY(0);
-}
+/* Removed variant-specific CSS transforms/transitions to avoid conflict with Motion One */
 
 .dialog-specs-box {
     background: #f8f9fa;

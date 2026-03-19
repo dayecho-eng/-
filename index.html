@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>실험실</title>
+    <title>모션 실험실</title>
     <link rel="stylesheet" href="style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
+    <!-- Motion library (motion.dev) -->
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
 </head>
 
 <body>
@@ -20,63 +22,10 @@
         <!-- Sidebar / Controls -->
         <aside class="controls">
             <header>
-                <h1>실험실</h1>
-                <span class="badge">PROD-READY</span>
+                <h1>모션 실험실</h1>
             </header>
 
-            <div class="control-group">
-                <label>MOTION TYPE</label>
-                <div class="selector-group" id="typeSelector">
-                    <button class="selector-btn active" data-type="Smooth">
-                        <span class="btn-label">Smooth</span>
-                        <span class="btn-info">bounce 0</span>
-                    </button>
-                    <button class="selector-btn" data-type="Snappy">
-                        <span class="btn-label">Snappy</span>
-                        <span class="btn-info">bounce 0.15</span>
-                    </button>
-                    <button class="selector-btn" data-type="Bouncy">
-                        <span class="btn-label">Bouncy</span>
-                        <span class="btn-info">bounce 0.3</span>
-                    </button>
-                </div>
-            </div>
 
-            <div class="control-group">
-                <label>SPEED</label>
-                <div class="selector-group" id="speedSelector">
-                    <button class="selector-btn" data-speed="Fastest">
-                        <span class="btn-label">Fastest</span>
-                        <span class="btn-info">0.25s</span>
-                    </button>
-                    <button class="selector-btn" data-speed="Fast">
-                        <span class="btn-label">Fast</span>
-                        <span class="btn-info">0.25s</span>
-                    </button>
-                    <button class="selector-btn active" data-speed="Default">
-                        <span class="btn-label">Default</span>
-                        <span class="btn-info">0.334s</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="specs">
-                <h3>Current Tokens</h3>
-                <div class="token-display">
-                    <div class="token-row">
-                        <span>Web Duration</span>
-                        <code id="val-web-dur">0.334s</code>
-                    </div>
-                    <div class="token-row">
-                        <span>iOS Spec</span>
-                        <code id="val-ios">334ms / 0</code>
-                    </div>
-                    <div class="token-row">
-                        <span>Android Spec</span>
-                        <code id="val-android">Stiff: 384</code>
-                    </div>
-                </div>
-            </div>
 
             <!-- Component Selection -->
             <div class="control-group">
@@ -105,30 +54,98 @@
                 </nav>
             </div>
 
-            <div class="control-group main-actions-group">
-                <label>Main Actions</label>
-                <div id="sheet-actions">
-                    <button class="primary-btn full-width" id="openSheetBtn">Open Sheet</button>
-                </div>
-                <div id="stepper-actions" class="hidden">
-                    <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
-                        <strong>실험 A그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Small</strong>
-                    </p>
-                    <p style="font-size: 13px; color: #666; line-height: 1.4;">
-                        <strong>실험 B그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Medium</strong>
-                    </p>
-                </div>
-                <div id="page-indicator-actions" class="hidden">
-                    <div style="display: flex; gap: 8px;">
-                        <button class="primary-btn" id="prevIndicatorBtn" style="flex: 1;">Prev</button>
-                        <button class="primary-btn" id="nextIndicatorBtn" style="flex: 1;">Next</button>
+            <!-- Floating Control Panel at the bottom -->
+            <div class="floating-controls">
+                <div class="control-group">
+                    <label>MOTION TYPE</label>
+                    <div class="selector-group compact" id="typeSelector">
+                        <button class="selector-btn active" data-type="Smooth">
+                            <span class="btn-label">Smooth</span>
+                            <span class="btn-info">bounce 0</span>
+                        </button>
+                        <button class="selector-btn" data-type="Snappy">
+                            <span class="btn-label">Snappy</span>
+                            <span class="btn-info">bounce 0.15</span>
+                        </button>
+                        <button class="selector-btn" data-type="Bouncy">
+                            <span class="btn-label">Bouncy</span>
+                            <span class="btn-info">bounce 0.3</span>
+                        </button>
                     </div>
                 </div>
-                <div id="dialog-alert-actions" class="hidden">
-                    <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
-                        <strong>Variants A-F 실험</strong><br>
-                        Figma Intercation Test
-                    </p>
+
+                <div class="control-group">
+                    <label>SPEED</label>
+                    <div class="selector-group compact" id="speedSelector">
+                        <button class="selector-btn" data-speed="Fastest">
+                            <span class="btn-label">Fastest</span>
+                            <span class="btn-info">0.167s</span>
+                        </button>
+                        <button class="selector-btn" data-speed="Fast">
+                            <span class="btn-label">Fast</span>
+                            <span class="btn-info">0.251s</span>
+                        </button>
+                        <button class="selector-btn active" data-speed="Default">
+                            <span class="btn-label">Default</span>
+                            <span class="btn-info">0.334s</span>
+                        </button>
+                        <button class="selector-btn" data-speed="Slow">
+                            <span class="btn-label">Slow</span>
+                            <span class="btn-info">0.668s</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="specs collapsible" id="specsCollapsible">
+                    <button class="specs-toggle" id="specsToggle">
+                        <span>Current Tokens</span>
+                        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="specs-content collapsed">
+                        <div class="token-display">
+                            <div class="token-row">
+                                <span>Web Dur</span>
+                                <code id="val-web-dur">0.334s</code>
+                            </div>
+                            <div class="token-row">
+                                <span>iOS</span>
+                                <code id="val-ios">334ms / 0</code>
+                            </div>
+                            <div class="token-row">
+                                <span>Android</span>
+                                <code id="val-android">Stiff: 384</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group main-actions-group" id="mainActionsGroup">
+                    <label>Main Actions</label>
+                    <div id="sheet-actions">
+                        <button class="primary-btn full-width" id="openSheetBtn">Open Sheet</button>
+                    </div>
+                    <div id="stepper-actions" class="hidden">
+                        <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
+                            <strong>실험 A그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Small</strong>
+                        </p>
+                        <p style="font-size: 13px; color: #666; line-height: 1.4;">
+                            <strong>실험 B그룹</strong>: Stepper 내부 버튼사이즈 : <strong>Medium</strong>
+                        </p>
+                    </div>
+                    <div id="page-indicator-actions" class="hidden">
+                        <div style="display: flex; gap: 8px;">
+                            <button class="primary-btn" id="prevIndicatorBtn" style="flex: 1;">Prev</button>
+                            <button class="primary-btn" id="nextIndicatorBtn" style="flex: 1;">Next</button>
+                        </div>
+                    </div>
+                    <div id="dialog-alert-actions" class="hidden">
+                        <p style="font-size: 13px; color: #666; line-height: 1.4; margin-bottom: 8px;">
+                            <strong>Variants A-F 실험</strong><br>
+                            Figma Intercation Test
+                        </p>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -966,8 +983,45 @@
                                 <h2>Experimental Group A (Small)</h2>
                                 <p>내부 버튼 사이즈: 26x26 (아이콘: 18x18)</p>
                             </div>
-                            <!-- Shadow Style -->
+                            <!-- Blur Style -->
                             <div class="stepper-variant">
+                                <h3>Blur Style</h3>
+                                <div class="product-grid">
+                                    <div class="product-card blur-variant size-160">
+                                        <div class="thumbnail">
+                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
+                                                alt="Burger">
+                                            <div class="stepper-container" data-id="ga_bl160">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">햄)더블치즈와퍼세트</div>
+                                            <div class="price-info"><span class="price">8,900원</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-card blur-variant size-107">
+                                        <div class="thumbnail">
+                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
+                                            <div class="stepper-container" data-id="ga_bl107">
+                                                <button class="step-btn minus"></button>
+                                                <span class="step-count">1</span>
+                                                <button class="step-btn plus"></button>
+                                                <button class="add-initial-btn"></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <div class="name">요플레</div>
+                                            <div class="price-info"><span class="price">2,800원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Shadow Style -->
+                            <div class="stepper-variant" style="margin-top: 32px;">
                                 <h3>Shadow Style</h3>
                                 <div class="product-grid">
                                     <div class="product-card shadow-variant size-160">
@@ -1040,15 +1094,23 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Group B: Medium -->
+                        <div class="exp-column" id="group-b">
+                            <div class="exp-header">
+                                <h2>Experimental Group B (Medium)</h2>
+                                <p>내부 버튼 사이즈: 38x38 (아이콘: 24x24)</p>
+                            </div>
                             <!-- Blur Style -->
-                            <div class="stepper-variant" style="margin-top: 32px;">
+                            <div class="stepper-variant">
                                 <h3>Blur Style</h3>
-                                <div class="product-grid">
+                                <div class="product-grid exp-b">
                                     <div class="product-card blur-variant size-160">
                                         <div class="thumbnail">
                                             <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
                                                 alt="Burger">
-                                            <div class="stepper-container" data-id="ga_bl160">
+                                            <div class="stepper-container" data-id="gb_bl160">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
                                                 <button class="step-btn plus"></button>
@@ -1063,7 +1125,7 @@
                                     <div class="product-card blur-variant size-107">
                                         <div class="thumbnail">
                                             <img src="./stepper-yoplait.jpg" alt="Yoplait">
-                                            <div class="stepper-container" data-id="ga_bl107">
+                                            <div class="stepper-container" data-id="gb_bl107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
                                                 <button class="step-btn plus"></button>
@@ -1077,16 +1139,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Group B: Medium -->
-                        <div class="exp-column" id="group-b">
-                            <div class="exp-header">
-                                <h2>Experimental Group B (Medium)</h2>
-                                <p>내부 버튼 사이즈: 38x38 (아이콘: 24x24)</p>
-                            </div>
                             <!-- Shadow Style -->
-                            <div class="stepper-variant">
+                            <div class="stepper-variant" style="margin-top: 32px;">
                                 <h3>Shadow Style</h3>
                                 <div class="product-grid exp-b">
                                     <div class="product-card shadow-variant size-160">
@@ -1146,43 +1200,6 @@
                                         <div class="thumbnail">
                                             <img src="./stepper-yoplait.jpg" alt="Yoplait">
                                             <div class="stepper-container" data-id="gb_b107">
-                                                <button class="step-btn minus"></button>
-                                                <span class="step-count">1</span>
-                                                <button class="step-btn plus"></button>
-                                                <button class="add-initial-btn"></button>
-                                            </div>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="name">요플레</div>
-                                            <div class="price-info"><span class="price">2,800원</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Blur Style -->
-                            <div class="stepper-variant" style="margin-top: 32px;">
-                                <h3>Blur Style</h3>
-                                <div class="product-grid exp-b">
-                                    <div class="product-card blur-variant size-160">
-                                        <div class="thumbnail">
-                                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200&auto=format&fit=crop"
-                                                alt="Burger">
-                                            <div class="stepper-container" data-id="gb_bl160">
-                                                <button class="step-btn minus"></button>
-                                                <span class="step-count">1</span>
-                                                <button class="step-btn plus"></button>
-                                                <button class="add-initial-btn"></button>
-                                            </div>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="name">햄)더블치즈와퍼세트</div>
-                                            <div class="price-info"><span class="price">8,900원</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card blur-variant size-107">
-                                        <div class="thumbnail">
-                                            <img src="./stepper-yoplait.jpg" alt="Yoplait">
-                                            <div class="stepper-container" data-id="gb_bl107">
                                                 <button class="step-btn minus"></button>
                                                 <span class="step-count">1</span>
                                                 <button class="step-btn plus"></button>
@@ -1323,13 +1340,12 @@
                     <li>• 열여섯 번째 항목: 포인트 적립 및 사용 한도에 대한 정책입니다.</li>
                     <li>• 열일곱 번째 항목: 결제 수단별 영수증 발급 방법입니다.</li>
                     <li>• 열여덟 번째 항목: 기사님 매너 평가 및 피드백 전달 방법입니다.</li>
-                    <li>• 열아홉 번째 항목: 야간 배달 시 소음 방지를 위한 협조 요청입니다.</li>
                     <li>• 스무 번째 항목: 마지막으로, 스크롤이 충분히 발생하는지 확인하기 위한 끝부분 텍스트입니다.</li>
                 </ul>
             </div>
-        </div>
-        <div class="sheet-footer" id="sheetFooter">
-            <button class="primary-btn full-width black-style" id="footerConfirmBtn">버튼</button>
+            <div class="sheet-footer" id="sheetFooter">
+                <button class="primary-btn full-width black-style" id="footerConfirmBtn">버튼</button>
+            </div>
         </div>
     </div>
 
