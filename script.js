@@ -27,7 +27,8 @@ const sheetSurface = document.getElementById('sheetSurface');
 const openBtn = document.getElementById('openSheetBtn');
 const closeBtn = document.getElementById('headerCloseBtn');
 const footerConfirmBtn = document.getElementById('footerConfirmBtn');
-const motionSelect = document.getElementById('motionSelect');
+const typeBtns = document.querySelectorAll('#typeSelector .selector-btn');
+const speedBtns = document.querySelectorAll('#speedSelector .selector-btn');
 const root = document.documentElement;
 
 // Labels
@@ -287,10 +288,22 @@ sheetSurface.addEventListener('mousedown', (e) => {
     window.addEventListener('mouseup', onMouseUp);
 });
 
-motionSelect.addEventListener('change', (e) => {
-    const [type, speed] = e.target.value.split('.');
-    currentMotion = { type, speed };
-    updateTokens(type, speed);
+typeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        typeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMotion.type = btn.dataset.type;
+        updateTokens(currentMotion.type, currentMotion.speed);
+    });
+});
+
+speedBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        speedBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMotion.speed = btn.dataset.speed;
+        updateTokens(currentMotion.type, currentMotion.speed);
+    });
 });
 
 // Tab Switching

@@ -25,18 +25,39 @@
             </header>
 
             <div class="control-group">
-                <label>Motion Variant</label>
-                <select id="motionSelect">
-                    <option value="Smooth.Default">Smooth Default</option>
-                    <option value="Smooth.Fast">Smooth Fast</option>
-                    <option value="Smooth.Fastest">Smooth Fastest</option>
-                    <option value="Snappy.Default">Snappy Default</option>
-                    <option value="Snappy.Fast">Snappy Fast</option>
-                    <option value="Snappy.Fastest">Snappy Fastest</option>
-                    <option value="Bouncy.Default">Bouncy Default</option>
-                    <option value="Bouncy.Fast">Bouncy Fast</option>
-                    <option value="Bouncy.Fastest">Bouncy Fastest</option>
-                </select>
+                <label>MOTION TYPE</label>
+                <div class="selector-group" id="typeSelector">
+                    <button class="selector-btn active" data-type="Smooth">
+                        <span class="btn-label">Smooth</span>
+                        <span class="btn-info">bounce 0</span>
+                    </button>
+                    <button class="selector-btn" data-type="Snappy">
+                        <span class="btn-label">Snappy</span>
+                        <span class="btn-info">bounce 0.15</span>
+                    </button>
+                    <button class="selector-btn" data-type="Bouncy">
+                        <span class="btn-label">Bouncy</span>
+                        <span class="btn-info">bounce 0.3</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>SPEED</label>
+                <div class="selector-group" id="speedSelector">
+                    <button class="selector-btn" data-speed="Fastest">
+                        <span class="btn-label">Fastest</span>
+                        <span class="btn-info">0.25s</span>
+                    </button>
+                    <button class="selector-btn" data-speed="Fast">
+                        <span class="btn-label">Fast</span>
+                        <span class="btn-info">0.25s</span>
+                    </button>
+                    <button class="selector-btn active" data-speed="Default">
+                        <span class="btn-label">Default</span>
+                        <span class="btn-info">0.334s</span>
+                    </button>
+                </div>
             </div>
 
             <div class="specs">
